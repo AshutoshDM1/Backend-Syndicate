@@ -35,9 +35,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for more details and to contribute to thi
 
 ## 🌐 Live API
 
-Base URL: https://restaurant-table-booking-backend.elitedev.tech
-<br>
-OpenAPI Doc URL: https://restaurant-table-booking-backend.elitedev.tech/api-docs/
+Base URL: https://backend-syndicate.onrender.com
 
 ## 🛠️ Tech Stack
 
