@@ -1,0 +1,42 @@
+{
+  "name": "backend-syndicate",
+  "version": "0.0.1",
+  "description": "Backend Server of Restaurant POS System",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AshutoshDM1/Backend-Syndicate.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "build": "prisma generate && tsc -b",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "format": "prettier --write .",
+    "check-format": "prettier --check .",
+    "lint": "eslint --ext .ts .",
+    "lint:fix": "eslint --ext .ts --fix ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "eslint": "^9.28.0",
+    "globals": "^16.2.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.1",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@prisma/client": "6.9.0",
+    "prisma": "^6.9.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.19.2"
+  },
+  "type": "commonjs",
+  "main": "src/index.ts",
+  "author": "",
+  "license": "ISC"
+}
