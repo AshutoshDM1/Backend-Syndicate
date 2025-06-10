@@ -2,15 +2,30 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import type { Request, Response, NextFunction, Application } from 'express';
-// Load environment variables
+import { toNodeHandler } from 'better-auth/node';
+import { auth } from './lib/auth';
+import indexRoutes from './routes/index.route';
 dotenv.config({ path: '.env' });
 
 export const app: Application = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 2020;
+
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
+
 
 // Middleware
-app.use(cors());
 app.use(express.json());
+app.all("/api/auth/*", toNodeHandler(auth));
+
+
+// Routes
+app.use('/api/v1', indexRoutes);
+
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -23,7 +38,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-
+// Health check
 app.get(['/', '/health'], async (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
