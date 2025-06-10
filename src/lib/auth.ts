@@ -14,6 +14,7 @@ const prisma = new PrismaClient({
 
 export const auth = betterAuth({
   callbackURL: 'http://localhost:5173/dashboard',
+  baseURL: 'http://localhost:2020',
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
