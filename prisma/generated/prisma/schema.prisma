@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String?  @unique
+  role      Role?    @default(ADMIN)
+  password  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  restaurantId String?
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+
+  emailVerified Boolean
+  image         String?
+  sessions      Session[]
+  accounts      Account[]
+
+  @@map("user")
+}
+
+model Restaurant {
+  id        String     @id @default(uuid())
+  name      String
+  address   String
+  createdAt DateTime   @default(now())
+  users     User[]
+  customers Customer[]
+}
+
+model Customer {
+  id            String     @id @default(uuid())
+  name          String
+  phone         String?    @unique
+  email         String?    @unique
+  loyaltyPoints Int        @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  restaurantId  String
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+  // Relations
+  orders        Order[]
+  feedbacks     Feedback[]
+}
+
+model Feedback {
+  id         String    @id @default(uuid())
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+  comment    String
+  rating     Int
+  createdAt  DateTime  @default(now())
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  customer   Customer?   @relation(fields: [customerId], references: [id])
+  customerId String?
+  amount     Float
+  status     OrderStatus
+  createdAt  DateTime    @default(now())
+
+  // Add KOT, items, payments, etc., later
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  CASHIER
+  CHEF
+  WAITER
+}
+
+enum OrderStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}

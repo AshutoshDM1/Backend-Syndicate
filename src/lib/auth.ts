@@ -1,16 +1,11 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { PrismaClient } from '../generated/prisma';
+import { prisma } from '../db';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 
 
 dotenv.config();
-
-// Enable Prisma logging
-const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error'],
-});
 
 export const auth = betterAuth({
   callbackURL: 'http://localhost:5173/dashboard',
