@@ -4,15 +4,29 @@ import { prisma } from '../db';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 
-
 dotenv.config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export const auth = betterAuth({
-  callbackURL: 'http://localhost:5173/dashboard',
-  baseURL: 'http://localhost:2020',
+  callbackURL: isProduction 
+    ? 'https://frontend-syndicate.vercel.app/dashboard'
+    : 'http://localhost:5173/dashboard',
+  redirectURL: isProduction 
+    ? 'https://frontend-syndicate.vercel.app/dashboard'
+    : 'http://localhost:5173/dashboard',
+  baseURL: isProduction 
+    ? 'https://pos-syndicate.elitedev.tech'
+    : 'http://localhost:2020',
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+  cookies: {
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    httpOnly: true,
+    maxAge: 60 * 60 * 24 * 7,
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
@@ -26,13 +40,17 @@ export const auth = betterAuth({
       }
     },
   },
-  trustedOrigins: ['http://localhost:2020', 'http://localhost:5173'],
+  trustedOrigins: [
+    'http://localhost:5173',
+    'http://localhost:2020',
+    'https://frontend-syndicate.vercel.app',
+    'https://pos-syndicate.elitedev.tech'
+  ],
   databaseHooks: {
     user: {
       create: {
         before: async (userData) => {
           console.log("Creating user with data:", userData);
-          // Add required role field for every user
           return { 
             data: { 
               ...userData, 
