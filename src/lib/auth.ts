@@ -6,26 +6,17 @@ import bcrypt from 'bcrypt';
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV === 'production';
+// const isProduction = process.env.NODE_ENV === 'production';
 
 export const auth = betterAuth({
-  callbackURL: isProduction 
-    ? 'https://frontend-syndicate.vercel.app/dashboard'
-    : 'http://localhost:5173/dashboard',
-  redirectURL: isProduction 
-    ? 'https://frontend-syndicate.vercel.app/dashboard'
-    : 'http://localhost:5173/dashboard',
-  baseURL: isProduction 
-    ? 'https://pos-syndicate.elitedev.tech'
-    : 'http://localhost:2020',
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
   cookies: {
-    secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    secure: false,
+    sameSite: 'none',
     httpOnly: true,
-    maxAge: 60 * 60 * 24 * 7,
+    path: '/',
   },
   emailAndPassword: {
     enabled: true,
@@ -72,6 +63,14 @@ export const auth = betterAuth({
     github: {
       clientId: process.env.GITHUB_CLIENT_ID || '',
       clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
+    },
+  },
+  advanced: {
+    defaultCookieAttributes: {
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+      partitioned: true,
     },
   },
 });
