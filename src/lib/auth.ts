@@ -6,8 +6,6 @@ import bcrypt from 'bcrypt';
 
 dotenv.config();
 
-// const isProduction = process.env.NODE_ENV === 'production';
-
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
