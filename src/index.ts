@@ -15,7 +15,8 @@ app.use(cors({
     'http://localhost:5173',
     'http://localhost:2020', 
     'https://frontend-syndicate.vercel.app',
-    'https://pos-syndicate.elitedev.tech'
+    'https://pos-syndicate.elitedev.tech',
+    'https://backend-syndicate.onrender.com'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD'],
@@ -50,7 +51,13 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 // Health check
-app.get(['/', '/health'], async (req: Request, res: Response) => {
+app.get('/health', async (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: 'Server is running',
+  });
+});
+app.get('/', async (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
     message: 'Server is running',

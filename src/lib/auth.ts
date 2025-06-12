@@ -35,7 +35,8 @@ export const auth = betterAuth({
     'http://localhost:5173',
     'http://localhost:2020',
     'https://frontend-syndicate.vercel.app',
-    'https://pos-syndicate.elitedev.tech'
+    'https://pos-syndicate.elitedev.tech',
+    'https://backend-syndicate.onrender.com'
   ],
   databaseHooks: {
     user: {
