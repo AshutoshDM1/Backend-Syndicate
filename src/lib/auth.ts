@@ -7,15 +7,10 @@ import bcrypt from 'bcrypt';
 dotenv.config();
 
 export const auth = betterAuth({
+  baseURL: process.env.BASE_URL,
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
-  cookies: {
-    secure: false,
-    sameSite: 'none',
-    httpOnly: true,
-    path: '/',
-  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
@@ -65,11 +60,13 @@ export const auth = betterAuth({
     },
   },
   advanced: {
+    useSecureCookies: false,
     defaultCookieAttributes: {
-      secure: true,
+      secure: true, // Required for sameSite: "none"
       httpOnly: true,
-      sameSite: "none",
-      partitioned: true,
+      sameSite: "none", // Allows cross-origin cookie sharing
+      partitioned: true , // CRITICAL: Must be false for OAuth flows
+      path: '/',
     },
   },
 });
