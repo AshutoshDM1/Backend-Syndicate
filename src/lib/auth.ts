@@ -51,6 +51,7 @@ export const auth = betterAuth({
   },
   socialProviders: {
     google: {
+      prompt: "select_account", 
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     },
@@ -60,12 +61,12 @@ export const auth = betterAuth({
     },
   },
   advanced: {
-    useSecureCookies: false,
+    useSecureCookies: true,
     defaultCookieAttributes: {
       secure: true, // Required for sameSite: "none"
       httpOnly: true,
       sameSite: "none", // Allows cross-origin cookie sharing
-      partitioned: true , // CRITICAL: Must be false for OAuth flows
+      partitioned: false , // CRITICAL: Must be false for OAuth flows
       path: '/',
     },
   },
