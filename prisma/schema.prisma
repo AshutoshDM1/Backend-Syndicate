@@ -39,6 +39,8 @@ model User {
   // Relations
   sessions      Session[]
   accounts      Account[]
+  verifications Verification[]
+
   @@map("user")
 }
 
@@ -75,6 +77,18 @@ model Account {
   // Relations
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@map("account")
+}
+
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
 }
 
 ////////////// MENU //////////////
