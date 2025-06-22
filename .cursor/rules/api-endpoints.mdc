@@ -1,0 +1,73 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# API Endpoint Design Guidelines
+
+## RESTful Resource Naming
+- Use nouns for resources (e.g., `/users`, `/orders`, `/menu-items`)
+- Use plural for collection endpoints
+- Use kebab-case for multi-word resource names
+- Nest resources to show relationships (e.g., `/users/:userId/orders`)
+
+## HTTP Methods
+- GET: Retrieve resources
+- POST: Create resources
+- PUT: Replace resources completely
+- PATCH: Update resources partially
+- DELETE: Remove resources
+
+## Status Codes
+- 200 OK: Successful request
+- 201 Created: Resource created successfully
+- 204 No Content: Successful request with no response body
+- 400 Bad Request: Invalid request format
+- 401 Unauthorized: Authentication required
+- 403 Forbidden: Authenticated but not authorized
+- 404 Not Found: Resource not found
+- 500 Internal Server Error: Server-side error
+
+## Request/Response Format
+- Request bodies should be JSON
+- Response format:
+  ```json
+  {
+    "success": true|false,
+    "message": "Human-readable message",
+    "data": { /* Response data */ },
+    "error": "Error message if success is false"
+  }
+  ```
+
+## Pagination
+- Use query parameters for pagination:
+  - `page`: Page number (1-indexed)
+  - `limit`: Items per page
+- Include pagination metadata in response:
+  ```json
+  {
+    "success": true,
+    "message": "Resources retrieved",
+    "data": { 
+      "items": [...],
+      "pagination": {
+        "totalItems": 100,
+        "totalPages": 10,
+        "currentPage": 1,
+        "itemsPerPage": 10,
+        "hasNextPage": true,
+        "hasPrevPage": false
+      }
+    }
+  }
+  ```
+
+## Filtering and Sorting
+- Use query parameters for filtering (e.g., `?status=active`)
+- Use `sort` parameter for sorting (e.g., `?sort=createdAt:desc`)
+
+## Versioning
+- Include version in URL path (e.g., `/api/v1/users`)
+- Maintain backward compatibility within a version
+

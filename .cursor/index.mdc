@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Backend Syndicate
+
+This is a Node.js/Express backend for a Restaurant POS System with TypeScript, Prisma ORM, and PostgreSQL.
+
+## Key Information
+- **Project Type**: Restaurant POS System Backend
+- **Tech Stack**: Node.js, Express, TypeScript, Prisma, PostgreSQL
+- **Authentication**: better-auth library
+- **API Style**: RESTful
+
+## Core Principles
+- Maintain type safety with TypeScript
+- Follow RESTful API design principles
+- Use Prisma for database operations
+- Implement proper error handling and validation
+- Follow the established project structure and naming conventions
+
+## Project Structure
+- `/src`: Main source code
+  - `/controllers`: Request handlers
+  - `/routes`: API routes
+  - `/utils`: Utility functions
+  - `/lib`: Core libraries and configurations
+- `/prisma`: Database schema and migrations
+
+## When generating code:
+1. Follow the established patterns in existing files
+2. Use proper TypeScript types
+3. Implement error handling with ApiError and asyncHandler
+4. Format responses with ApiResponse
+5. Keep controllers focused and move business logic to services when appropriate
+

@@ -1,0 +1,121 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Database and Prisma Usage Patterns
+
+## Prisma Schema Design
+- Use clear, descriptive model names
+- Define appropriate field types and constraints
+- Use relations to represent connections between models
+- Add comments to explain complex fields or relationships
+- Use enums for fields with predefined values
+
+## Database Operations
+- Import the Prisma client from `src/db.ts`
+- Use transactions for operations that modify multiple tables
+- Handle database errors properly
+- Use appropriate query operators
+
+Example:
+```typescript
+import { db } from '../db';
+import { ApiError } from '../utils/ApiError';
+import { asyncHandler } from '../utils/asyncHandler';
+
+export const createUser = asyncHandler(async (req, res) => {
+  const { name, email, password, role } = req.body;
+  
+  // Check if user already exists
+  const existingUser = await db.user.findUnique({
+    where: { email }
+  });
+  
+  if (existingUser) {
+    throw new ApiError(400, "User with this email already exists");
+  }
+  
+  // Create new user
+  const user = await db.user.create({
+    data: {
+      name,
+      email,
+      password, // Note: Password should be hashed before storing
+      role
+    }
+  });
+  
+  // Remove password from response
+  const { password: _, ...userWithoutPassword } = user;
+  
+  return res.status(201).json({
+    success: true,
+    message: "User created successfully",
+    data: userWithoutPassword
+  });
+});
+```
+
+## Relationships
+- Use appropriate relationship types (one-to-one, one-to-many, many-to-many)
+- Include related data using `include` or `select`
+- Be mindful of N+1 query problems
+
+Example fetching related data:
+```typescript
+const userWithOrders = await db.user.findUnique({
+  where: { id: userId },
+  include: {
+    orders: {
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    }
+  }
+});
+```
+
+## Filtering and Pagination
+- Use Prisma's filtering capabilities for efficient queries
+- Implement pagination for large data sets
+- Use appropriate sorting options
+
+Example:
+```typescript
+const users = await db.user.findMany({
+  where: {
+    role: role || undefined,
+    name: name ? { contains: name, mode: 'insensitive' } : undefined
+  },
+  skip: (page - 1) * limit,
+  take: limit,
+  orderBy: { createdAt: 'desc' }
+});
+
+const totalUsers = await db.user.count({
+  where: {
+    role: role || undefined,
+    name: name ? { contains: name, mode: 'insensitive' } : undefined
+  }
+});
+
+const pagination = {
+  totalItems: totalUsers,
+  totalPages: Math.ceil(totalUsers / limit),
+  currentPage: page,
+  itemsPerPage: limit,
+  hasNextPage: page < Math.ceil(totalUsers / limit),
+  hasPrevPage: page > 1
+};
+```
+
+## Data Validation
+- Validate input data before database operations
+- Use appropriate error messages for validation failures
+- Consider using a validation library
+
+## Performance Considerations
+- Use selective fetching with `select` to retrieve only needed fields
+- Create appropriate indexes for frequently queried fields
+- Monitor query performance and optimize as needed
+

@@ -1,0 +1,70 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Backend Syndicate - Restaurant POS System
+
+## Project Overview
+- This is a Node.js/Express backend for a Restaurant POS System
+- Uses TypeScript for type safety
+- PostgreSQL database with Prisma ORM
+- Authentication handled with better-auth
+- RESTful API design principles
+
+## Architecture Guidelines
+
+### API Structure
+- All routes should be organized in the `/src/routes` directory
+- Controllers should be in `/src/controllers` directory
+- Follow RESTful naming conventions for endpoints
+- Group related functionality by domain (users, menu, orders, etc.)
+
+### Database
+- Use Prisma for all database operations
+- Follow the schema defined in `prisma/schema.prisma`
+- Create proper relations between models
+- Use transactions for operations that modify multiple tables
+
+### Authentication
+- Authentication is handled by better-auth
+- User roles: ADMIN, MANAGER, ORDER_MANAGER, KITCHEN_MANAGER, CUSTOMER
+- Implement proper authorization checks for protected routes
+
+## Coding Standards
+
+### TypeScript
+- Use proper TypeScript types for all variables, parameters, and return values
+- Avoid using `any` type
+- Create interfaces for complex data structures
+- Use enums for predefined sets of values
+
+### Error Handling
+- Use the ApiError utility for consistent error responses
+- Wrap async route handlers with asyncHandler for error handling
+- Return appropriate HTTP status codes
+- Provide meaningful error messages
+
+### Response Format
+- Use the ApiResponse utility for consistent response format
+- All responses should include:
+  - success: boolean
+  - message: string
+  - data: object (optional)
+  - error: string (if applicable)
+
+### File Naming
+- Use kebab-case for file names
+- Group related files in directories
+- Controllers: `*.controller.ts`
+- Routes: `*.route.ts`
+- Utilities: `*.util.ts`
+
+## Best Practices
+- Keep controllers thin, move business logic to services
+- Use environment variables for configuration
+- Validate request data before processing
+- Implement proper logging
+- Write clear comments for complex logic
+- Follow DRY (Don't Repeat Yourself) principle
+
