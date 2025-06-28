@@ -55,6 +55,7 @@ Base URL: https://backend-syndicate.onrender.com
 
 - `POST /` - home route
 - `POST /health` - Check if the server is running
+- Customer - [docs](/docs/customer.md)
 
 ## 📄 License
 

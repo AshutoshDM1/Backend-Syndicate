@@ -5,6 +5,7 @@ import type { Request, Response, NextFunction, Application } from 'express';
 import { toNodeHandler } from 'better-auth/node';
 import { auth } from './lib/auth';
 import userRoutes from './routes/user.route';
+import customerRoutes from './routes/customer.route';
 dotenv.config({ path: '.env' });
 
 export const app: Application = express();
@@ -37,6 +38,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/customers', customerRoutes);
 
 
 // Error handling middleware
