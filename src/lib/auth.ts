@@ -39,20 +39,26 @@ export const auth = betterAuth({
           return {
             data: {
               ...userData,
-              role: 'ADMIN',
+              role: 'CUSTOMER',
             },
           };
         },
         after: async (user) => {
-          console.log('User created:', user);
-          //   create a customer
-          const customer = await prisma.customer.create({
-            data: {
-              id: user.id,
-              userId: user.id,
-            },
+          const existingCustomer = await prisma.customer.findUnique({
+            where: { userId: user.id },
           });
-          console.log('customer created:', customer);
+          
+          if (!existingCustomer) {
+            const customer = await prisma.customer.create({
+              data: {
+                id: user.id,
+                userId: user.id,
+              },
+            });
+            console.log('Customer created for user:', customer);
+          } else {
+            console.log('Customer already exists for user:', user.id);
+          }
         },
       },
     },

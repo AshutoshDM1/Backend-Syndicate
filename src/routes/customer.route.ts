@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import controller from '../controllers/CustomerController/index';
 
-
 const customerRoutes = Router();
 
 customerRoutes.get('/', controller.getCustomerDetails);

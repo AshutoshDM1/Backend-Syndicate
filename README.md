@@ -35,7 +35,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for more details and to contribute to thi
 
 ## 🌐 Live API
 
-Base URL: https://backend-syndicate.onrender.com
+- Base URL: `https://backend-syndicate.onrender.com`
+- Swagger API Documentation: `https://backend-syndicate.onrender.com/api-docs`
+
 
 ## 🛠️ Tech Stack
 

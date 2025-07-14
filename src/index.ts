@@ -6,6 +6,7 @@ import { toNodeHandler } from 'better-auth/node';
 import { auth } from './lib/auth';
 import userRoutes from './routes/user.route';
 import customerRoutes from './routes/customer.route';
+import { swaggerUi, specs } from './config/swagger';
 dotenv.config({ path: '.env' });
 
 export const app: Application = express();
@@ -36,6 +37,13 @@ app.all("/api/auth/*", toNodeHandler(auth));
 app.use(express.json());
 
 
+// Swagger API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Backend Syndicate API Documentation',
+}));
+
 // Routes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/customers', customerRoutes);
@@ -59,6 +67,7 @@ app.get('/health', async (req: Request, res: Response) => {
     message: 'Server is running',
   });
 });
+
 app.get('/', async (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
@@ -69,4 +78,5 @@ app.get('/', async (req: Request, res: Response) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
+  console.log(`Swagger API Documentation: http://localhost:${PORT}/api-docs`);
 });
