@@ -19,7 +19,7 @@ const options: swaggerJSDoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:2020',
+        url: `http://localhost:${process.env.PORT || 2020}`,
         description: 'Development server',
       },
       {
