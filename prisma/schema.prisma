@@ -142,7 +142,75 @@ model Customer {
   user                  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   //   loyaltyAccount        LoyaltyAccount?
   //   orders                Order[]
-  //   feedback              Feedback[]
+  feedback              Feedback[]
   //   customerTags          CustomerTag[]
   @@map("customers")
+}
+
+////////////// FEEDBACK //////////////
+enum FeedbackType {
+  RATING
+  COMPLAINT
+  SUGGESTION
+  COMPLIMENT
+  INQUIRY
+}
+
+enum FeedbackStatus {
+  PENDING
+  REVIEWED
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum FeedbackPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ResolutionStatus {
+  UNRESOLVED
+  IN_PROGRESS
+  RESOLVED
+  ESCALATED
+}
+
+model Feedback {
+  id           String       @id @default(uuid())
+  customerId   String
+  feedbackType FeedbackType @default(RATING)
+
+  // Ratings (1-5 scale)
+  overallRating       Int?
+  foodQualityRating   Int?
+  serviceRating       Int?
+  deliveryRating      Int?
+  valueForMoneyRating Int?
+
+  // Text feedback
+  feedbackText String?
+  photos       String[]         @default([]) // Array of photo URLs
+
+  // Management
+  status       FeedbackStatus   @default(PENDING)
+  priority     FeedbackPriority @default(MEDIUM)
+  categoryTags String[]         @default([])
+  isPublic     Boolean          @default(false)
+
+  // Resolution
+  responseText     String?
+  respondedBy      String? // Staff member ID
+  respondedAt      DateTime?
+  resolutionStatus ResolutionStatus @default(UNRESOLVED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  customer  Customer @relation(fields: [customerId], references: [id])
+
+  @@map("feedback")
 }

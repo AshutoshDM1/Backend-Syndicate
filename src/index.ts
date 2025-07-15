@@ -6,6 +6,7 @@ import { toNodeHandler } from 'better-auth/node';
 import { auth } from './lib/auth';
 import userRoutes from './routes/user.route';
 import customerRoutes from './routes/customer.route';
+import feedbackRoutes from './routes/feedback.route';
 import { swaggerUi, specs } from './config/swagger';
 dotenv.config({ path: '.env' });
 
@@ -47,6 +48,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
 // Routes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/customers', customerRoutes);
+app.use('/api/v1/feedback', feedbackRoutes);
 
 
 // Error handling middleware
