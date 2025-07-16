@@ -1,0 +1,107 @@
+// =============================================================================
+// MENU MANAGEMENT DOMAIN
+// =============================================================================
+
+model Category {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  isActive    Boolean    @default(true)
+  sortOrder   Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  menuItems   MenuItem[]
+  
+  @@map("category")
+}
+
+model MenuItem {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  image       String?
+  categoryId  String
+  isAvailable Boolean  @default(true)
+  rating      Decimal? @default(0) @db.Decimal(2, 1)
+  prepTime    Int?     // Preparation time in minutes
+  calories    Int?
+  isVegetarian Boolean @default(false)
+  isVegan     Boolean @default(false)
+  isGlutenFree Boolean @default(false)
+  isSpicy     Boolean @default(false)
+  sortOrder   Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  modifiers   MenuItemModifier[]
+  orderItems  OrderItem[]
+  comboItems  ComboMealItem[]
+  
+  @@map("menu_item")
+}
+
+model Modifier {
+  id          String       @id @default(uuid())
+  name        String
+  price       Decimal      @default(0) @db.Decimal(10, 2)
+  type        ModifierType
+  description String?
+  isAvailable Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations
+  menuItems   MenuItemModifier[]
+  orderItemModifiers OrderItemModifier[]
+  
+  @@map("modifier")
+}
+
+model MenuItemModifier {
+  menuItemId String
+  modifierId String
+  isRequired Boolean @default(false)
+  sortOrder  Int     @default(0)
+
+  // Relations
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  modifier   Modifier @relation(fields: [modifierId], references: [id], onDelete: Cascade)
+
+  @@id([menuItemId, modifierId])
+  @@map("menu_item_modifier")
+}
+
+model ComboMeal {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  image       String?
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  items       ComboMealItem[]
+  orderItems  OrderItem[]
+  
+  @@map("combo_meal")
+}
+
+model ComboMealItem {
+  comboMealId String
+  menuItemId  String
+  quantity    Int @default(1)
+
+  // Relations
+  comboMeal   ComboMeal @relation(fields: [comboMealId], references: [id], onDelete: Cascade)
+  menuItem    MenuItem  @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@id([comboMealId, menuItemId])
+  @@map("combo_meal_item")
+} 
