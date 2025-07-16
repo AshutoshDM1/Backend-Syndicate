@@ -1,24 +1,17 @@
-import { Request, Response } from "express";
-import { prisma } from "../../db";
-import { UserType } from "../../../prisma/generated/prisma";
+import { Request, Response } from 'express';
+import { prisma } from '../../db';
+import { UpdateUserInput } from './validation';
+import { asyncHandler } from '../../utils/asyncHandler';
+import { ApiResponse } from '../../utils/ApiResponse';
+import { UserType } from '../../../prisma/generated/prisma';
 
-interface UpdateUserBody {
-    id: string;
-    role: UserType;
-}
+export const updateUser = asyncHandler(async (req: Request, res: Response) => {
+  const { id, role } = req.body as unknown as UpdateUserInput;
 
-const updateUser = async (req: Request, res: Response) => {
-    const { id, role }: UpdateUserBody = req.body;
+  const user = await prisma.user.update({
+    where: { id: id },
+    data: { role: role as UserType },
+  });
 
-    const user = await prisma.user.update({
-        where: { id: id },
-        data: { role: role },
-    });
-
-    res.status(200).json({
-        user: user,
-        message: "User updated successfully",
-    });
-};
-
-export { updateUser };
+  res.status(200).json(new ApiResponse(200, { user }, 'User updated successfully'));
+});

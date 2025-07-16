@@ -1,0 +1,21 @@
+// =============================================================================
+// TABLE MANAGEMENT DOMAIN
+// =============================================================================
+
+model Table {
+  id             String      @id @default(uuid())
+  number         String      // e.g., "A1", "B2"
+  status         TableStatus @default(AVAILABLE)
+  size           TableSize
+  orderStartTime DateTime?
+  orderId        String?
+  floor          Int
+  customerCount  Int?
+  totalAmount    Float?
+  orderItems     Int?
+
+  // Relations
+  orders Order[]
+  
+  @@map("table")
+}

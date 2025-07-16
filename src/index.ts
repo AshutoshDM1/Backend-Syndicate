@@ -7,6 +7,9 @@ import { auth } from './lib/auth';
 import userRoutes from './routes/user.route';
 import customerRoutes from './routes/customer.route';
 import { swaggerUi, specs } from './config/swagger';
+import tableRoutes from './routes/table.route';
+// import orderRoutes from './routes/order.route';
+// import menuItemRoutes from './routes/menuItem.route';
 dotenv.config({ path: '.env' });
 
 export const app: Application = express();
@@ -47,7 +50,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
 // Routes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/customers', customerRoutes);
-
+app.use('/api/v1/tables', tableRoutes);
+// app.use('/api/v1/orders', orderRoutes);
+// app.use('/api/v1/menuItems', menuItemRoutes);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

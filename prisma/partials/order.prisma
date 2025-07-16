@@ -1,0 +1,53 @@
+// =============================================================================
+// ORDER MANAGEMENT DOMAIN
+// =============================================================================
+
+model Order { 
+  id             String      @id @default(uuid())
+  tableId        String
+  customerName   String
+  customerPhone  Int?
+  orderTime      DateTime    @default(now())
+  totalAmount    Decimal     @default(0)
+  status         OrderStatus @default(STARTED)
+  paymentMethod  PaymentMethod
+
+  // Relations
+  table      Table       @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+  
+  @@map("order")
+}
+
+model OrderItem {
+  id          String  @id @default(uuid())
+  orderId     String
+  menuItemId  String?
+  comboMealId String?
+  quantity    Int
+  unitPrice   Decimal @db.Decimal(10, 2)
+  totalPrice  Decimal @db.Decimal(10, 2)
+  notes       String?
+
+  // Relations
+  order       Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem    MenuItem? @relation(fields: [menuItemId], references: [id])
+  comboMeal   ComboMeal? @relation(fields: [comboMealId], references: [id])
+  modifiers   OrderItemModifier[]
+
+  @@map("order_item")
+}
+
+model OrderItemModifier {
+  orderItemId String
+  modifierId  String
+  quantity    Int     @default(1)
+  unitPrice   Decimal @db.Decimal(10, 2)
+
+  // Relations
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  modifier    Modifier  @relation(fields: [modifierId], references: [id], onDelete: Cascade)
+
+  @@id([orderItemId, modifierId])
+  @@map("order_item_modifier")
+} 

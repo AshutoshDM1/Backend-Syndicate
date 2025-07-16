@@ -1,28 +1,30 @@
-import { Request, Response } from "express";
-import { prisma } from "../../db";
-import { UserType } from "../../../prisma/generated/prisma";
+import { Request, Response } from 'express';
+import { prisma } from '../../db';
+import { asyncHandler } from '../../utils/asyncHandler';
+import { ApiResponse } from '../../utils/ApiResponse';
+import { UserDetailTableInput } from './validation';
+import { UserType } from '../../../prisma/generated/prisma';
 
-const userDetailTable = async (req: Request, res: Response) => {
-    const { role } = req.query;
+export const userDetailTable = asyncHandler(async (req: Request, res: Response) => {
+  let { role } = req.query as unknown as UserDetailTableInput;
 
-    const whereClause = role && role !== 'ALL' ? { role: role as UserType } : {};
-
+  if (!role) {
+    role = 'ALL';
+  }
+  console.log(role);
+  if (role === 'ALL') {
+    const users = await prisma.user.findMany();
+    res
+      .status(200)
+      .json(new ApiResponse(200, { users, role }, 'User detail table fetched successfully'));
+  } else {
     const users = await prisma.user.findMany({
-        where: whereClause,
-    }); 
-
-    const totalUsers = await prisma.user.count({
-        where: whereClause,
+      where: {
+        role: role as UserType,
+      },
     });
-
-    res.status(200).json({
-        users: users,
-        totalUsers: totalUsers,
-        role: role,
-        message: "User detail table fetched successfully",
-    });
-};
-
-export { userDetailTable };
-
-
+    res
+      .status(200)
+      .json(new ApiResponse(200, { users, role }, 'User detail table fetched successfully'));
+  }
+});

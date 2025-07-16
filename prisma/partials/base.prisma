@@ -1,0 +1,58 @@
+// Base configuration and global enums
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// GLOBAL ENUMS
+// =============================================================================
+
+enum UserType {
+  ADMIN
+  MANAGER
+  ORDER_MANAGER
+  KITCHEN_MANAGER
+  CUSTOMER
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  UPI
+  WALLET
+  NET_BANKING
+}
+
+enum TableStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  ORDERING
+  NEEDS_CLEANING
+}
+
+enum TableSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum OrderStatus {
+  STARTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ModifierType {
+  EXTRA
+  OPTION
+} 

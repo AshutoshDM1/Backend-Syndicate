@@ -1,8 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// This file is auto-generated from partials. Do not edit directly.
+// Run "npm run build:schema" to regenerate this file.
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Base configuration and global enums
 
 generator client {
   provider = "prisma-client-js"
@@ -14,7 +13,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-////////////// USER //////////////
+// =============================================================================
+// GLOBAL ENUMS
+// =============================================================================
 
 enum UserType {
   ADMIN
@@ -23,6 +24,45 @@ enum UserType {
   KITCHEN_MANAGER
   CUSTOMER
 }
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  UPI
+  WALLET
+  NET_BANKING
+}
+
+enum TableStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  ORDERING
+  NEEDS_CLEANING
+}
+
+enum TableSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum OrderStatus {
+  STARTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ModifierType {
+  EXTRA
+  OPTION
+} 
+
+// =============================================================================
+// USER MANAGEMENT DOMAIN
+// =============================================================================
 
 model User {
   id            String    @id @default(uuid())
@@ -40,7 +80,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   verifications Verification[]
-  customer  Customer?  
+  customer      Customer?  
 
   @@map("user")
 }
@@ -93,17 +133,11 @@ model Verification {
   userId     String?
 
   @@map("verification")
-}
+} 
 
-////////////// CUSTOMER //////////////
-enum PaymentMethod {
-  CASH
-  CREDIT_CARD
-  DEBIT_CARD
-  UPI
-  WALLET
-  NET_BANKING
-}
+// =============================================================================
+// CUSTOMER DOMAIN
+// =============================================================================
 
 model Customer {
   id                    String            @id @default(uuid())
@@ -137,12 +171,196 @@ model Customer {
   //   address               Address[]
   //   deliveryInstructions  String?
   
-  
   // Relations
   user                  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   //   loyaltyAccount        LoyaltyAccount?
   //   orders                Order[]
   //   feedback              Feedback[]
   //   customerTags          CustomerTag[]
+  
   @@map("customers")
+} 
+
+// =============================================================================
+// TABLE MANAGEMENT DOMAIN
+// =============================================================================
+
+model Table {
+  id             String      @id @default(uuid())
+  number         String      // e.g., "A1", "B2"
+  status         TableStatus @default(AVAILABLE)
+  size           TableSize
+  orderStartTime DateTime?
+  orderId        String?
+  floor          Int
+  customerCount  Int?
+  totalAmount    Float?
+  orderItems     Int?
+
+  // Relations
+  orders Order[]
+  
+  @@map("table")
 }
+
+// =============================================================================
+// ORDER MANAGEMENT DOMAIN
+// =============================================================================
+
+model Order { 
+  id             String      @id @default(uuid())
+  tableId        String
+  customerName   String
+  customerPhone  Int?
+  orderTime      DateTime    @default(now())
+  totalAmount    Decimal     @default(0)
+  status         OrderStatus @default(STARTED)
+  paymentMethod  PaymentMethod
+
+  // Relations
+  table      Table       @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+  
+  @@map("order")
+}
+
+model OrderItem {
+  id          String  @id @default(uuid())
+  orderId     String
+  menuItemId  String?
+  comboMealId String?
+  quantity    Int
+  unitPrice   Decimal @db.Decimal(10, 2)
+  totalPrice  Decimal @db.Decimal(10, 2)
+  notes       String?
+
+  // Relations
+  order       Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem    MenuItem? @relation(fields: [menuItemId], references: [id])
+  comboMeal   ComboMeal? @relation(fields: [comboMealId], references: [id])
+  modifiers   OrderItemModifier[]
+
+  @@map("order_item")
+}
+
+model OrderItemModifier {
+  orderItemId String
+  modifierId  String
+  quantity    Int     @default(1)
+  unitPrice   Decimal @db.Decimal(10, 2)
+
+  // Relations
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  modifier    Modifier  @relation(fields: [modifierId], references: [id], onDelete: Cascade)
+
+  @@id([orderItemId, modifierId])
+  @@map("order_item_modifier")
+} 
+
+// =============================================================================
+// MENU MANAGEMENT DOMAIN
+// =============================================================================
+
+model Category {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  isActive    Boolean    @default(true)
+  sortOrder   Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  menuItems   MenuItem[]
+  
+  @@map("category")
+}
+
+model MenuItem {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  image       String?
+  categoryId  String
+  isAvailable Boolean  @default(true)
+  rating      Decimal? @default(0) @db.Decimal(2, 1)
+  prepTime    Int?     // Preparation time in minutes
+  calories    Int?
+  isVegetarian Boolean @default(false)
+  isVegan     Boolean @default(false)
+  isGlutenFree Boolean @default(false)
+  isSpicy     Boolean @default(false)
+  sortOrder   Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  modifiers   MenuItemModifier[]
+  orderItems  OrderItem[]
+  comboItems  ComboMealItem[]
+  
+  @@map("menu_item")
+}
+
+model Modifier {
+  id          String       @id @default(uuid())
+  name        String
+  price       Decimal      @default(0) @db.Decimal(10, 2)
+  type        ModifierType
+  description String?
+  isAvailable Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations
+  menuItems   MenuItemModifier[]
+  orderItemModifiers OrderItemModifier[]
+  
+  @@map("modifier")
+}
+
+model MenuItemModifier {
+  menuItemId String
+  modifierId String
+  isRequired Boolean @default(false)
+  sortOrder  Int     @default(0)
+
+  // Relations
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  modifier   Modifier @relation(fields: [modifierId], references: [id], onDelete: Cascade)
+
+  @@id([menuItemId, modifierId])
+  @@map("menu_item_modifier")
+}
+
+model ComboMeal {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  image       String?
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  items       ComboMealItem[]
+  orderItems  OrderItem[]
+  
+  @@map("combo_meal")
+}
+
+model ComboMealItem {
+  comboMealId String
+  menuItemId  String
+  quantity    Int @default(1)
+
+  // Relations
+  comboMeal   ComboMeal @relation(fields: [comboMealId], references: [id], onDelete: Cascade)
+  menuItem    MenuItem  @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@id([comboMealId, menuItemId])
+  @@map("combo_meal_item")
+} 
