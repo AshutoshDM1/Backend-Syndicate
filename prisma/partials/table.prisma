@@ -6,13 +6,10 @@ model Table {
   id             String      @id @default(uuid())
   number         String      // e.g., "A1", "B2"
   status         TableStatus @default(AVAILABLE)
-  size           TableSize
-  orderStartTime DateTime?
+  size           TableSize   @default(SMALL)
   orderId        String?
   floor          Int
   customerCount  Int?
-  totalAmount    Float?
-  orderItems     Int?
 
   // Relations
   orders Order[]

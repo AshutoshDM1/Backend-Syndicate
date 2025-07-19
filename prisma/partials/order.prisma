@@ -11,6 +11,7 @@ model Order {
   totalAmount    Decimal     @default(0)
   status         OrderStatus @default(STARTED)
   paymentMethod  PaymentMethod
+  customerId     String?
 
   // Relations
   table      Table       @relation(fields: [tableId], references: [id], onDelete: Cascade)
