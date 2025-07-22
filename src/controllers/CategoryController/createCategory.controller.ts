@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../db';
-import { CreateCategoryInput } from './validation';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { ApiError } from '../../utils/ApiError';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { CreateCategoryInput } from './validation';
 
 export const createCategory = asyncHandler(async (req: Request, res: Response): Promise<void> => {
   const categoryData: CreateCategoryInput = req.body;

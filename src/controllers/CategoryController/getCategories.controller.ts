@@ -1,18 +1,19 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../db';
-import { GetCategoriesQuery } from './validation';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { GetCategoriesQuery } from './validation';
+import { Prisma } from '../../../prisma/generated/prisma';
 
 export const getCategories = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const query: GetCategoriesQuery = req.query as any;
+  const query: GetCategoriesQuery = req.query as unknown as GetCategoriesQuery;
 
   const page = query.page || 1;
   const limit = query.limit || 10;
   const skip = (page - 1) * limit;
 
   // Build where clause for filtering
-  const where: any = {};
+  const where: Prisma.CategoryWhereInput = {};
 
   if (query.isActive !== undefined) {
     where.isActive = query.isActive;
@@ -36,7 +37,7 @@ export const getCategories = asyncHandler(async (req: Request, res: Response): P
   }
 
   // Build orderBy clause
-  const orderBy: any = {};
+  const orderBy: Prisma.CategoryOrderByWithRelationInput = {};
   if (query.sortBy && query.sortOrder) {
     orderBy[query.sortBy] = query.sortOrder;
   } else {

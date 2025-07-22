@@ -3,9 +3,10 @@ import { prisma } from '../../db';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { ApiError } from '../../utils/ApiError';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { GetModifierByIdInput } from './validation';
 
 export const getModifierById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+  const { id }: GetModifierByIdInput = req.params as unknown as GetModifierByIdInput;
 
   const modifier = await prisma.modifier.findUnique({
     where: { id },

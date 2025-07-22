@@ -3,9 +3,10 @@ import { prisma } from '../../db';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { ApiError } from '../../utils/ApiError';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { DeleteModifierInput } from './validation';
 
 export const deleteModifier = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+  const { id }: DeleteModifierInput = req.params as unknown as DeleteModifierInput;
 
   // Check if modifier exists
   const existingModifier = await prisma.modifier.findUnique({
@@ -15,7 +16,7 @@ export const deleteModifier = asyncHandler(async (req: Request, res: Response): 
         select: { menuItemId: true }
       },
       orderItemModifiers: {
-        select: { id: true }
+        select: { orderItemId: true }
       }
     }
   });

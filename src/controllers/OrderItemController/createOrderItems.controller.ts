@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { prisma } from '../../db';
 import { asyncHandler } from '../../utils/asyncHandler';
 import { ApiResponse } from '../../utils/ApiResponse';
-import { PaymentMethod } from '../../../prisma/generated/prisma';
 import { CreateOrderItemsInput } from './validation';
 
 export const createOrderItems = asyncHandler(async (req: Request, res: Response): Promise<void> => {

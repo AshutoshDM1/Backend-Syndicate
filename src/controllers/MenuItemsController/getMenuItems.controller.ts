@@ -3,16 +3,17 @@ import { prisma } from '../../db';
 import { GetMenuItemsQuery } from './validation';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { Prisma } from '../../../prisma/generated/prisma';
 
 export const getMenuItems = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const query: GetMenuItemsQuery = req.query as any;
+  const query: GetMenuItemsQuery = req.query as unknown as GetMenuItemsQuery;  
 
   const page = query.page || 1;
   const limit = query.limit || 10;
   const skip = (page - 1) * limit;
 
   // Build where clause for filtering
-  const where: any = {};
+  const where: Prisma.MenuItemWhereInput = {};
 
   if (query.categoryId) {
     where.categoryId = query.categoryId;
@@ -56,7 +57,7 @@ export const getMenuItems = asyncHandler(async (req: Request, res: Response): Pr
   }
 
   // Build orderBy clause
-  const orderBy: any = {};
+  const orderBy: Prisma.MenuItemOrderByWithRelationInput = {};
   if (query.sortBy && query.sortOrder) {
     orderBy[query.sortBy] = query.sortOrder;
   } else {

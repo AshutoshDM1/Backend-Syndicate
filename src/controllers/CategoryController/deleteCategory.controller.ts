@@ -3,9 +3,10 @@ import { prisma } from '../../db';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { ApiError } from '../../utils/ApiError';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { DeleteCategoryInput } from './validation';
 
 export const deleteCategory = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+  const { id }: DeleteCategoryInput = req.params as DeleteCategoryInput;
 
   // Check if category exists
   const existingCategory = await prisma.category.findUnique({
