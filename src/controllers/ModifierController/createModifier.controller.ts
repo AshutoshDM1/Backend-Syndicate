@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../db';
-import { CreateModifierInput } from './validation';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { ApiError } from '../../utils/ApiError';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { CreateModifierInput } from './validation';
 
 export const createModifier = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const modifierData: CreateModifierInput = req.body;
+  const modifierData: CreateModifierInput = req.body as unknown as CreateModifierInput;
 
   // Check if modifier with same name already exists
   const existingModifier = await prisma.modifier.findFirst({

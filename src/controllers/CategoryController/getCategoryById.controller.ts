@@ -3,9 +3,10 @@ import { prisma } from '../../db';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { ApiError } from '../../utils/ApiError';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { GetCategoryByIdInput } from './validation';
 
 export const getCategoryById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+  const { id }: GetCategoryByIdInput = req.params as GetCategoryByIdInput;
 
   const category = await prisma.category.findUnique({
     where: { id },
