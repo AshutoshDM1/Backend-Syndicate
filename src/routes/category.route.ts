@@ -5,7 +5,7 @@ import {
   getCategoryById,
   updateCategory,
   deleteCategory
-} from '../controllers/MenuItemsController';
+} from '../controllers/CategoryController';
 
 import {
   createCategorySchema,
@@ -13,7 +13,7 @@ import {
   getCategoryByIdSchema,
   deleteCategorySchema,
   getCategoriesQuerySchema
-} from '../controllers/MenuItemsController/validation';
+} from '../controllers/CategoryController/validation';
 
 import { validateSchema, validateParams, validateQuery } from '../utils/validation.middleware';
 

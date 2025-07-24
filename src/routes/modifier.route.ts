@@ -4,18 +4,17 @@ import {
   getModifiers,
   getModifierById,
   updateModifier,
-  deleteModifier
-} from '../controllers/MenuItemsController';
-
-import {
-  createModifierSchema,
-  updateModifierSchema,
-  getModifierByIdSchema,
-  deleteModifierSchema,
-  getModifiersQuerySchema
-} from '../controllers/MenuItemsController/validation';
+  deleteModifier,
+} from '../controllers/ModifierController';
 
 import { validateSchema, validateParams, validateQuery } from '../utils/validation.middleware';
+import {
+  getModifiersQuerySchema,
+  getModifierByIdSchema,
+  createModifierSchema,
+  updateModifierSchema,
+  deleteModifierSchema,
+} from '../controllers/ModifierController/validation';
 
 const modifierRoutes = Router();
 
@@ -29,9 +28,14 @@ modifierRoutes.get('/:id', validateParams(getModifierByIdSchema), getModifierByI
 modifierRoutes.post('/', validateSchema(createModifierSchema), createModifier);
 
 // PUT /api/v1/modifiers/:id - Update modifier
-modifierRoutes.put('/:id', validateParams(getModifierByIdSchema), validateSchema(updateModifierSchema), updateModifier);
+modifierRoutes.put(
+  '/:id',
+  validateParams(getModifierByIdSchema),
+  validateSchema(updateModifierSchema),
+  updateModifier
+);
 
 // DELETE /api/v1/modifiers/:id - Delete modifier
 modifierRoutes.delete('/:id', validateParams(deleteModifierSchema), deleteModifier);
 
-export default modifierRoutes; 
+export default modifierRoutes;

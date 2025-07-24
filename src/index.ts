@@ -8,7 +8,7 @@ import userRoutes from './routes/user.route';
 import customerRoutes from './routes/customer.route';
 import { swaggerUi, specs } from './config/swagger';
 import tableRoutes from './routes/table.route';
-// import orderRoutes from './routes/order.route';
+import orderRoutes from './routes/order.route';
 import menuItemRoutes from './routes/menuItem.route';
 import categoryRoutes from './routes/category.route';
 import modifierRoutes from './routes/modifier.route';
@@ -53,7 +53,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/customers', customerRoutes);
 app.use('/api/v1/tables', tableRoutes);
-// app.use('/api/v1/orders', orderRoutes);
+app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/menu-items', menuItemRoutes);
 app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/modifiers', modifierRoutes);
