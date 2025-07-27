@@ -12,6 +12,7 @@ import orderRoutes from './routes/order.route';
 import menuItemRoutes from './routes/menuItem.route';
 import categoryRoutes from './routes/category.route';
 import modifierRoutes from './routes/modifier.route';
+import comboMealsRouter from './routes/comboMeals.route';
 dotenv.config({ path: '.env' });
 
 export const app: Application = express();
@@ -57,6 +58,7 @@ app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/menu-items', menuItemRoutes);
 app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/modifiers', modifierRoutes);
+app.use('/api/v1/combo-meals', comboMealsRouter);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
