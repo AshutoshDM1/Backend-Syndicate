@@ -29,7 +29,6 @@ export const createTable = asyncHandler(async (req: Request, res: Response): Pro
         size: tableData.size,
         floor: tableData.floor,
         customerCount: tableData.customerCount,
-        orderStartTime: tableData.orderStartTime
       },
     });
 

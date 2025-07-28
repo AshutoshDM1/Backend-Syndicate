@@ -26,7 +26,10 @@ export const createMenuItemSchema = z.object({
     .optional()
     .nullable(),
   
-  categoryId: z.string().uuid('Invalid category ID format'),
+  categoryId: z.string()
+    .min(1, 'Category ID is required')
+    .max(255, 'Category ID must be less than 255 characters')
+    .trim(),
   
   isAvailable: z.boolean().optional().default(true),
   
@@ -86,7 +89,11 @@ export const updateMenuItemSchema = z.object({
     .optional()
     .nullable(),
   
-  categoryId: z.string().uuid('Invalid category ID format').optional(),
+  categoryId: z.string()
+    .min(1, 'Category ID is required')
+    .max(255, 'Category ID must be less than 255 characters')
+    .trim()
+    .optional(),
   
   isAvailable: z.boolean().optional(),
   

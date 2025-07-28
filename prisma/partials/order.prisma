@@ -26,9 +26,6 @@ model OrderItem {
   menuItemId  String?
   comboMealId String?
   quantity    Int
-  unitPrice   Decimal @db.Decimal(10, 2)
-  totalPrice  Decimal @db.Decimal(10, 2)
-  notes       String?
 
   // Relations
   order       Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)

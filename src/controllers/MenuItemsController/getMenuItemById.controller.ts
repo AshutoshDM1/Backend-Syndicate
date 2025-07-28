@@ -3,9 +3,10 @@ import { prisma } from '../../db';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { ApiError } from '../../utils/ApiError';
 import { asyncHandler } from '../../utils/asyncHandler';
+import { GetMenuItemByIdInput } from './validation';
 
 export const getMenuItemById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+  const { id } : GetMenuItemByIdInput = req.params as unknown as GetMenuItemByIdInput;
 
   const menuItem = await prisma.menuItem.findUnique({
     where: { id },

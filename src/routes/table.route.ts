@@ -1,13 +1,16 @@
 import { Router } from 'express';
-import { createTable } from '../controllers/TableControllers/createTable.controller';
-import { getTable } from '../controllers/TableControllers/getTable.controller';
-import { getTableById } from '../controllers/TableControllers/getTableById.controller';
-import { deleteTable } from '../controllers/TableControllers/deleteTable.controller';
-import { 
-  createTableSchema, 
-  getTableByIdSchema, 
-  getTablesQuerySchema, 
-  deleteTableSchema 
+import {
+  createTable,
+  getTable,
+  getTableById,
+  deleteTable,
+} from '../controllers/TableControllers';
+
+import {
+  createTableSchema,
+  getTableByIdSchema,
+  getTablesQuerySchema,
+  deleteTableSchema,
 } from '../controllers/TableControllers/validation';
 import { validateSchema, validateParams, validateQuery } from '../utils/validation.middleware';
 

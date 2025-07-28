@@ -15,9 +15,6 @@ export const createOrderSchema = z.object({
     menuItemId: z.string().uuid('Invalid menu item ID format').optional(),
     comboMealId: z.string().uuid('Invalid combo meal ID format').optional(),
     quantity: z.number().int().min(1),
-    unitPrice: z.number().min(0, 'Unit price must be greater than 0'),
-    totalPrice: z.number().min(0, 'Total price must be greater than 0'),
-    notes: z.string().optional(),
   })),
 });
 
@@ -33,9 +30,6 @@ export const updateOrderSchema = z.object({
     menuItemId: z.string().uuid('Invalid menu item ID format').optional(),
     comboMealId: z.string().uuid('Invalid combo meal ID format').optional(),
     quantity: z.number().int().min(1).optional(),
-    unitPrice: z.number().min(0, 'Unit price must be greater than 0').optional(),
-    totalPrice: z.number().min(0, 'Total price must be greater than 0').optional(),
-    notes: z.string().optional(),
   })).optional(),
 });
 
