@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { prisma } from '../../db';
 
 const deleteCustomer = async (req: Request, res: Response) => {
-  const { id } = req.body;
+  const { id  } = req.body;
 
   if (!id) {
     res.status(501).json({

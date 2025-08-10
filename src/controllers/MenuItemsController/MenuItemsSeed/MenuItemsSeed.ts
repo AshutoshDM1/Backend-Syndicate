@@ -350,7 +350,7 @@ export const MenuItemsSeed = async () => {
         name: "Chicken & Cake Combo",
         description: "Grilled chicken with sunny citrus cake for dessert",
         price: 22.50,
-        image: "https://images.unsplash.com/photo-1546069900247-0877df9cc83c?w=400&h=300&fit=crop",
+        image: "https://images.unsplash.com/photo-1671898295493-b8a75407dadb?w=500&auto=format&fit=crop",
         isAvailable: true,
       },
     ],

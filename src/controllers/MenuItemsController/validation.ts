@@ -56,7 +56,7 @@ export const createMenuItemSchema = z.object({
   
   isVegetarian: z.boolean().optional().default(false),
   isVegan: z.boolean().optional().default(false),
-  isGlutenFree: z.boolean().optional().default(false),
+  isGlutenFree: z.boolean().optional().default(false),  
   isSpicy: z.boolean().optional().default(false),
   
   sortOrder: z.number()
@@ -130,11 +130,11 @@ export const updateMenuItemSchema = z.object({
 });
 
 export const getMenuItemByIdSchema = z.object({
-  id: z.string().uuid('Invalid menu item ID format')
+  id: z.string().min(1, 'Menu item ID is required')
 });
 
 export const deleteMenuItemSchema = z.object({
-  id: z.string().uuid('Invalid menu item ID format')
+  id: z.string().min(1, 'Menu item ID is required')
 });
 
 export const getMenuItemsQuerySchema = z.object({
@@ -149,7 +149,7 @@ export const getMenuItemsQuerySchema = z.object({
     .min(1, 'Limit must be greater than 0')
     .max(100, 'Limit must be less than 100')
     .optional()
-    .default(10),
+    .default(100),
   
   categoryId: z.string().uuid('Invalid category ID format').optional(),
   
