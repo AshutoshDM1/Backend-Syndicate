@@ -28,7 +28,6 @@ export const createTable = asyncHandler(async (req: Request, res: Response): Pro
         status: tableData.status || 'AVAILABLE',
         size: tableData.size,
         floor: tableData.floor,
-        customerCount: tableData.customerCount,
       },
     });
 

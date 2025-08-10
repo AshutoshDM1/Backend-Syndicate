@@ -6,96 +6,103 @@ export const TableSizeEnum = z.nativeEnum(TableSize);
 
 // Create table validation schema
 export const createTableSchema = z.object({
-  number: z.string()
+  number: z
+    .string()
     .min(1, 'Table number is required')
     .max(10, 'Table number must be less than 10 characters')
     .regex(/^[A-Z0-9]+$/, 'Table number must contain only uppercase letters and numbers'),
-  
+
   status: TableStatusEnum.optional().default('AVAILABLE'),
-  
+
   size: TableSizeEnum,
-  
-  floor: z.number()
+
+  floor: z
+    .number()
     .int('Floor must be an integer')
     .min(1, 'Floor must be at least 1')
     .max(50, 'Floor cannot exceed 50'),
-  
-  customerCount: z.number()
+
+  customerCount: z
+    .number()
     .int('Customer count must be an integer')
     .min(0, 'Customer count cannot be negative')
     .max(20, 'Customer count cannot exceed 20')
     .optional()
     .nullable(),
-  
-  orderStartTime: z.string()
-    .datetime('Invalid datetime format')
-    .optional()
-    .nullable()
-    .transform((val) => val ? new Date(val) : null)
 });
 
 // Update table validation schema
 export const updateTableSchema = z.object({
-  number: z.string()
+  id: z.string().uuid('Invalid table ID format'),
+
+  number: z
+    .string()
     .min(1, 'Table number is required')
     .max(10, 'Table number must be less than 10 characters')
     .regex(/^[A-Z0-9]+$/, 'Table number must contain only uppercase letters and numbers')
     .optional(),
-  
+
   status: TableStatusEnum.optional(),
-  
+
   size: TableSizeEnum.optional(),
-  
-  floor: z.number()
+
+  floor: z
+    .number()
     .int('Floor must be an integer')
     .min(1, 'Floor must be at least 1')
     .max(50, 'Floor cannot exceed 50')
     .optional(),
-  
-  customerCount: z.number()
-    .int('Customer count must be an integer')
-    .min(0, 'Customer count cannot be negative')
-    .max(20, 'Customer count cannot exceed 20')
-    .optional()
-    .nullable(),
-  
-  orderStartTime: z.string()
-    .datetime('Invalid datetime format')
-    .optional()
-    .nullable()
-    .transform((val) => val ? new Date(val) : null)
+
 });
 
 // Get table by ID validation schema
 export const getTableByIdSchema = z.object({
-  id: z.string()
-    .uuid('Invalid table ID format')
+  id: z.string().uuid('Invalid table ID format'),
 });
 
 // Query parameters validation for get tables
 export const getTablesQuerySchema = z.object({
   status: TableStatusEnum.optional(),
   size: TableSizeEnum.optional(),
-  floor: z.string()
+  floor: z
+    .string()
     .transform((val) => parseInt(val))
     .pipe(z.number().int().min(1).max(50))
     .optional(),
-  page: z.string()
+  page: z
+    .string()
     .transform((val) => parseInt(val))
     .pipe(z.number().int().min(1))
     .optional()
     .default(() => 1),
-  limit: z.string()
+  limit: z
+    .string()
     .transform((val) => parseInt(val))
     .pipe(z.number().int().min(1).max(100))
     .optional()
-    .default(() => 10)
+    .default(() => 10),
 });
 
 // Delete table validation schema
 export const deleteTableSchema = z.object({
-  id: z.string()
-    .uuid('Invalid table ID format')
+  id: z.string().uuid('Invalid table ID format'),
+});
+
+// Update table status validation schema
+export const updateTableStatusSchema = z.object({
+  id: z.string().uuid('Invalid table ID format'),
+  number: z
+    .string()
+    .min(1, 'Table number is required')
+    .max(10, 'Table number must be less than 10 characters')
+    .regex(/^[A-Z0-9]+$/, 'Table number must contain only uppercase letters and numbers'),
+  size: TableSizeEnum,
+  status: TableStatusEnum,
+  floor: z
+    .number()
+    .int('Floor must be an integer')
+    .min(1, 'Floor must be at least 1')
+    .max(50, 'Floor cannot exceed 50'),
 });
 
 // Type exports for use in controllers

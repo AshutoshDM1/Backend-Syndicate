@@ -6,9 +6,9 @@ import { PaymentMethod } from '../../../prisma/generated/prisma';
 import { CreateOrderInput } from './validation';
 
 export const createOrder = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const { tableId, customerName, customerPhone, totalAmount, status, paymentMethod, orderItems } =
+  const { tableId, customerName, customerPhone, totalAmount, status, paymentMethod, orderItems  } =
     req.body as unknown as CreateOrderInput;
-
+  
   const order = await prisma.order.create({
     data: {
       tableId,

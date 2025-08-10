@@ -11,7 +11,6 @@ export const userDetailTable = asyncHandler(async (req: Request, res: Response) 
   if (!role) {
     role = 'ALL';
   }
-  console.log(role);
   if (role === 'ALL') {
     const users = await prisma.user.findMany();
     res

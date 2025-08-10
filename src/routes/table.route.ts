@@ -4,6 +4,7 @@ import {
   getTable,
   getTableById,
   deleteTable,
+  updateTable,
 } from '../controllers/TableControllers';
 
 import {
@@ -11,6 +12,7 @@ import {
   getTableByIdSchema,
   getTablesQuerySchema,
   deleteTableSchema,
+  updateTableSchema,
 } from '../controllers/TableControllers/validation';
 import { validateSchema, validateParams, validateQuery } from '../utils/validation.middleware';
 
@@ -24,6 +26,9 @@ tableRoutes.get('/:id', validateParams(getTableByIdSchema), getTableById);
 
 // POST /api/v1/tables - Create new table
 tableRoutes.post('/', validateSchema(createTableSchema), createTable);
+
+// PUT /api/v1/tables/- Update table
+tableRoutes.put('/', validateSchema(updateTableSchema), updateTable);
 
 // DELETE /api/v1/tables/:id - Delete table
 tableRoutes.delete('/:id', validateParams(deleteTableSchema), deleteTable);

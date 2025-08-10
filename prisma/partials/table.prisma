@@ -9,7 +9,6 @@ model Table {
   size           TableSize   @default(SMALL)
   orderId        String?
   floor          Int
-  customerCount  Int?
 
   // Relations
   orders Order[]

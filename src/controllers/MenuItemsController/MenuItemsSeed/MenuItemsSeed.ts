@@ -15,9 +15,10 @@ export const MenuItemsSeed = async () => {
   console.log('Deleted all combo meals successfully!');
   await prisma.comboMealItem.deleteMany();
   console.log('Deleted all combo meal items successfully!');
+  
   // First, create categories
   console.log("Categories seeding...");
-  const categories = await prisma.category.createMany({
+  await prisma.category.createMany({
     data: [
       { 
         id: "cat-1", 
@@ -62,7 +63,7 @@ export const MenuItemsSeed = async () => {
   console.log("Categories seeded successfully!");
 
   // Create modifiers
-  const modifiers = await prisma.modifier.createMany({
+  await prisma.modifier.createMany({
     data: [
       // Pizza modifiers
       { id: "mod-1", name: "Extra Cheese", price: 2.50, type: ModifierType.EXTRA, description: "Add extra cheese to your pizza" },
@@ -110,7 +111,7 @@ export const MenuItemsSeed = async () => {
   console.log("Modifiers seeded successfully!");
 
   // Create menu items
-  const menuItems = await prisma.menuItem.createMany({
+  await prisma.menuItem.createMany({
     data: [
       {
         id: "item-1",
@@ -279,7 +280,7 @@ export const MenuItemsSeed = async () => {
   console.log("Menu items seeded successfully!");
 
   // Create menu item modifier relationships
-  const menuItemModifiers = await prisma.menuItemModifier.createMany({
+  await prisma.menuItemModifier.createMany({
     data: [
       // Pizza modifiers
       { menuItemId: "item-1", modifierId: "mod-1", isRequired: false, sortOrder: 1 },
@@ -327,7 +328,7 @@ export const MenuItemsSeed = async () => {
   console.log("Menu item modifiers seeded successfully!");
 
   // Create combo meals
-  const comboMeals = await prisma.comboMeal.createMany({
+  await prisma.comboMeal.createMany({
     data: [
       {
         id: "combo-1",
@@ -350,7 +351,7 @@ export const MenuItemsSeed = async () => {
         name: "Chicken & Cake Combo",
         description: "Grilled chicken with sunny citrus cake for dessert",
         price: 22.50,
-        image: "https://images.unsplash.com/photo-1546069900247-0877df9cc83c?w=400&h=300&fit=crop",
+        image: "https://images.unsplash.com/photo-1671898295493-b8a75407dadb?w=500&auto=format&fit=crop",
         isAvailable: true,
       },
     ],
@@ -360,7 +361,7 @@ export const MenuItemsSeed = async () => {
   console.log("Combo meals seeded successfully!");
 
   // Create combo meal items
-  const comboMealItems = await prisma.comboMealItem.createMany({
+  await prisma.comboMealItem.createMany({
     data: [
       // Pizza & Salad Combo
       { comboMealId: "combo-1", menuItemId: "item-1", quantity: 1 },
