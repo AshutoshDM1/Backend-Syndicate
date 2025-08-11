@@ -5,7 +5,8 @@ import { ApiResponse } from '../../../utils/ApiResponse';
 import { CreateOrderItemsInput } from './validation';
 
 export const createOrderItems = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const { orderId, menuItemId, comboMealId, quantity } = req.body as unknown as CreateOrderItemsInput;
+  const { orderId, menuItemId, comboMealId, quantity } =
+    req.body as unknown as CreateOrderItemsInput;
 
   const order = await prisma.orderItem.create({
     data: {

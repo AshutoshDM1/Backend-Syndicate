@@ -5,7 +5,7 @@ import {
   getMenuItems,
   getMenuItemById,
   updateMenuItem,
-  deleteMenuItem
+  deleteMenuItem,
 } from '../../controllers/MenuItemsController';
 
 import {
@@ -14,7 +14,7 @@ import {
   updateMenuItemSchema,
   getMenuItemByIdSchema,
   deleteMenuItemSchema,
-  getMenuItemsQuerySchema
+  getMenuItemsQuerySchema,
 } from '../../controllers/MenuItemsController/validation';
 
 import { validateSchema, validateParams, validateQuery } from '../../utils/validation.middleware';
@@ -32,7 +32,12 @@ menuItemRoutes.get('/:id', validateParams(getMenuItemByIdSchema), getMenuItemByI
 menuItemRoutes.post('/', validateSchema(createMenuItemSchema), createMenuItem);
 
 // PUT /api/v1/menu-items/:id - Update menu item
-menuItemRoutes.put('/:id', validateParams(getMenuItemByIdSchema), validateSchema(updateMenuItemSchema), updateMenuItem);
+menuItemRoutes.put(
+  '/:id',
+  validateParams(getMenuItemByIdSchema),
+  validateSchema(updateMenuItemSchema),
+  updateMenuItem
+);
 
 // DELETE /api/v1/menu-items/:id - Delete menu item
 menuItemRoutes.delete('/:id', validateParams(deleteMenuItemSchema), deleteMenuItem);

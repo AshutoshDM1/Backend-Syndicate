@@ -11,8 +11,8 @@ export const createModifier = asyncHandler(async (req: Request, res: Response): 
   // Check if modifier with same name already exists
   const existingModifier = await prisma.modifier.findFirst({
     where: {
-      name: modifierData.name
-    }
+      name: modifierData.name,
+    },
   });
 
   if (existingModifier) {
@@ -26,15 +26,9 @@ export const createModifier = asyncHandler(async (req: Request, res: Response): 
       price: modifierData.price ?? 0,
       type: modifierData.type,
       description: modifierData.description,
-      isAvailable: modifierData.isAvailable ?? true
-    }
+      isAvailable: modifierData.isAvailable ?? true,
+    },
   });
 
-  res.status(201).json(
-    new ApiResponse(
-      201,
-      newModifier,
-      'Modifier created successfully'
-    )
-  );
-}); 
+  res.status(201).json(new ApiResponse(201, newModifier, 'Modifier created successfully'));
+});

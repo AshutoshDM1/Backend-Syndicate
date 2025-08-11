@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../db';
-import { GetTablesQueryInput } from './validation'; 
+import { GetTablesQueryInput } from './validation';
 import { asyncHandler } from '../../utils/asyncHandler';
 import { ApiResponse } from '../../utils/ApiResponse';
 import { Prisma } from '../../../prisma/generated/prisma';

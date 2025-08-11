@@ -11,7 +11,7 @@ export const updateCategory = asyncHandler(async (req: Request, res: Response): 
 
   // Check if category exists
   const existingCategory = await prisma.category.findUnique({
-    where: { id }
+    where: { id },
   });
 
   if (!existingCategory) {
@@ -23,8 +23,8 @@ export const updateCategory = asyncHandler(async (req: Request, res: Response): 
     const nameConflict = await prisma.category.findFirst({
       where: {
         name: updateData.name,
-        id: { not: id } // Exclude current category
-      }
+        id: { not: id }, // Exclude current category
+      },
     });
 
     if (nameConflict) {
@@ -39,24 +39,18 @@ export const updateCategory = asyncHandler(async (req: Request, res: Response): 
     include: {
       _count: {
         select: {
-          menuItems: true
-        }
-      }
-    }
+          menuItems: true,
+        },
+      },
+    },
   });
 
   // Transform category to include item count
   const categoryWithCount = {
     ...updatedCategory,
     itemCount: updatedCategory._count.menuItems,
-    _count: undefined
+    _count: undefined,
   };
 
-  res.status(200).json(
-    new ApiResponse(
-      200,
-      categoryWithCount,
-      'Category updated successfully'
-    )
-  );
-}); 
+  res.status(200).json(new ApiResponse(200, categoryWithCount, 'Category updated successfully'));
+});

@@ -12,7 +12,7 @@ export const getComboMeals = asyncHandler(async (req: Request, res: Response): P
   const limit = query.limit || 10;
   const skip = (page - 1) * limit;
 
-  // Build where clause for filtering   
+  // Build where clause for filtering
   const where: Prisma.ComboMealWhereInput = {};
 
   if (query.search) {
@@ -20,15 +20,15 @@ export const getComboMeals = asyncHandler(async (req: Request, res: Response): P
       {
         name: {
           contains: query.search,
-          mode: 'insensitive'
-        }
+          mode: 'insensitive',
+        },
       },
       {
         description: {
           contains: query.search,
-          mode: 'insensitive'
-        }
-      }
+          mode: 'insensitive',
+        },
+      },
     ];
   }
 
@@ -46,9 +46,9 @@ export const getComboMeals = asyncHandler(async (req: Request, res: Response): P
       where,
       orderBy,
       skip,
-      take: limit
+      take: limit,
     }),
-    prisma.comboMeal.count({ where })
+    prisma.comboMeal.count({ where }),
   ]);
 
   const totalPages = Math.ceil(totalCount / limit);
@@ -63,10 +63,10 @@ export const getComboMeals = asyncHandler(async (req: Request, res: Response): P
           totalPages,
           totalCount,
           hasNextPage: page < totalPages,
-          hasPrevPage: page > 1
-        }
+          hasPrevPage: page > 1,
+        },
       },
       'Combo meals retrieved successfully'
     )
   );
-}); 
+});

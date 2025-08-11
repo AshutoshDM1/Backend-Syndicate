@@ -10,7 +10,7 @@ export const createComboMeal = asyncHandler(async (req: Request, res: Response):
 
   // Check if category exists
   const category = await prisma.category.findUnique({
-    where: { id: comboMealData.categoryId }
+    where: { id: comboMealData.categoryId },
   });
 
   if (!category) {
@@ -25,8 +25,8 @@ export const createComboMeal = asyncHandler(async (req: Request, res: Response):
   const existingMenuItem = await prisma.menuItem.findFirst({
     where: {
       name: comboMealData.name,
-      categoryId: comboMealData.categoryId
-    }
+      categoryId: comboMealData.categoryId,
+    },
   });
 
   if (existingMenuItem) {
@@ -42,14 +42,7 @@ export const createComboMeal = asyncHandler(async (req: Request, res: Response):
       image: comboMealData.image,
       isAvailable: comboMealData.isAvailable ?? true,
     },
-
   });
 
-  res.status(201).json(
-    new ApiResponse(
-      201,
-        newComboMeal,
-      'Combo meal created successfully'
-    )
-  );
-}); 
+  res.status(201).json(new ApiResponse(201, newComboMeal, 'Combo meal created successfully'));
+});

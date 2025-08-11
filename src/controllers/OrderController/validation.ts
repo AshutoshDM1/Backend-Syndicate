@@ -11,11 +11,13 @@ export const createOrderSchema = z.object({
   totalAmount: z.number().min(0, 'Total amount must be greater than 0'),
   status: OrderStatusEnum.optional(),
   paymentMethod: PaymentMethodEnum.optional(),
-  orderItems: z.array(z.object({
-    menuItemId: z.string().uuid('Invalid menu item ID format').optional(),
-    comboMealId: z.string().uuid('Invalid combo meal ID format').optional(),
-    quantity: z.number().int().min(1),
-  })),
+  orderItems: z.array(
+    z.object({
+      menuItemId: z.string().uuid('Invalid menu item ID format').optional(),
+      comboMealId: z.string().uuid('Invalid combo meal ID format').optional(),
+      quantity: z.number().int().min(1),
+    })
+  ),
 });
 
 export const updateOrderSchema = z.object({
@@ -26,17 +28,19 @@ export const updateOrderSchema = z.object({
   customerPhone: z.string().min(1, 'Customer phone is required').optional(),
   totalAmount: z.number().min(0, 'Total amount must be greater than 0').optional(),
   paymentMethod: PaymentMethodEnum.optional(),
-  orderItems: z.array(z.object({
-    menuItemId: z.string().uuid('Invalid menu item ID format').optional(),
-    comboMealId: z.string().uuid('Invalid combo meal ID format').optional(),
-    quantity: z.number().int().min(1).optional(),
-  })).optional(),
+  orderItems: z
+    .array(
+      z.object({
+        menuItemId: z.string().uuid('Invalid menu item ID format').optional(),
+        comboMealId: z.string().uuid('Invalid combo meal ID format').optional(),
+        quantity: z.number().int().min(1).optional(),
+      })
+    )
+    .optional(),
 });
 
-
 export const getOrderByIdSchema = z.object({
-  id: z.string()
-    .uuid('Invalid order ID format')
+  id: z.string().uuid('Invalid order ID format'),
 });
 
 export const getOrderSchema = z.object({
@@ -57,5 +61,5 @@ export const getOrderSchema = z.object({
 
 export type CreateOrderInput = z.infer<typeof createOrderSchema>;
 export type GetOrderInput = z.infer<typeof getOrderSchema>;
-export type GetOrderByIdInput = z.infer<typeof getOrderByIdSchema>; 
+export type GetOrderByIdInput = z.infer<typeof getOrderByIdSchema>;
 export type UpdateOrderInput = z.infer<typeof updateOrderSchema>;

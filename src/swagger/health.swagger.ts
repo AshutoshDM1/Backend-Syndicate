@@ -27,4 +27,4 @@
  *         $ref: '#/components/responses/ServerError'
  */
 
-export {}; 
+export {};

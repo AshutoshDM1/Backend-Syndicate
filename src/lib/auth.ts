@@ -14,9 +14,9 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
-        type: "string",
+        type: 'string',
         required: false,
-        defaultValue: "CUSTOMER",
+        defaultValue: 'CUSTOMER',
         input: false, // don't allow user to set role during signup
       },
     },
@@ -48,7 +48,7 @@ export const auth = betterAuth({
           const existingCustomer = await prisma.customer.findUnique({
             where: { userId: user.id },
           });
-          
+
           if (!existingCustomer) {
             const customer = await prisma.customer.create({
               data: {

@@ -11,7 +11,7 @@ export const updateComboMeal = asyncHandler(async (req: Request, res: Response):
 
   // Check if category exists
   const category = await prisma.category.findUnique({
-    where: { id: comboMealData.categoryId }
+    where: { id: comboMealData.categoryId },
   });
 
   if (!category) {
@@ -26,7 +26,7 @@ export const updateComboMeal = asyncHandler(async (req: Request, res: Response):
   const existingComboMeal = await prisma.comboMeal.findFirst({
     where: {
       name: comboMealData.name,
-    }
+    },
   });
 
   if (existingComboMeal) {
@@ -43,14 +43,7 @@ export const updateComboMeal = asyncHandler(async (req: Request, res: Response):
       image: comboMealData.image,
       isAvailable: comboMealData.isAvailable ?? true,
     },
-
   });
 
-  res.status(201).json(
-    new ApiResponse(
-      201,
-      updatedComboMeal,
-      'Combo meal updated successfully'
-    )
-  );
-}); 
+  res.status(201).json(new ApiResponse(201, updatedComboMeal, 'Combo meal updated successfully'));
+});

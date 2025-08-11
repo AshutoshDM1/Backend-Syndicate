@@ -52,7 +52,6 @@ export const updateTableSchema = z.object({
     .min(1, 'Floor must be at least 1')
     .max(50, 'Floor cannot exceed 50')
     .optional(),
-
 });
 
 // Get table by ID validation schema

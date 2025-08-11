@@ -13,12 +13,12 @@ export const deleteModifier = asyncHandler(async (req: Request, res: Response): 
     where: { id },
     include: {
       menuItems: {
-        select: { menuItemId: true }
+        select: { menuItemId: true },
       },
       orderItemModifiers: {
-        select: { orderItemId: true }
-      }
-    }
+        select: { orderItemId: true },
+      },
+    },
   });
 
   if (!existingModifier) {
@@ -27,23 +27,23 @@ export const deleteModifier = asyncHandler(async (req: Request, res: Response): 
 
   // Check if modifier is used in any menu items or orders
   if (existingModifier.menuItems.length > 0) {
-    throw new ApiError(400, 'Cannot delete modifier that is assigned to menu items. Please remove it from all menu items first.');
+    throw new ApiError(
+      400,
+      'Cannot delete modifier that is assigned to menu items. Please remove it from all menu items first.'
+    );
   }
 
   if (existingModifier.orderItemModifiers.length > 0) {
-    throw new ApiError(400, 'Cannot delete modifier that has been used in orders. Consider marking it as unavailable instead.');
+    throw new ApiError(
+      400,
+      'Cannot delete modifier that has been used in orders. Consider marking it as unavailable instead.'
+    );
   }
 
   // Delete the modifier
   await prisma.modifier.delete({
-    where: { id }
+    where: { id },
   });
 
-  res.status(200).json(
-    new ApiResponse(
-      200,
-      null,
-      'Modifier deleted successfully'
-    )
-  );
-}); 
+  res.status(200).json(new ApiResponse(200, null, 'Modifier deleted successfully'));
+});

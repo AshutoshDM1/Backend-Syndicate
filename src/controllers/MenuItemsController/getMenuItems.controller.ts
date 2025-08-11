@@ -6,7 +6,7 @@ import { asyncHandler } from '../../utils/asyncHandler';
 import { Prisma } from '../../../prisma/generated/prisma';
 
 export const getMenuItems = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-  const query: GetMenuItemsQuery = req.query as unknown as GetMenuItemsQuery;  
+  const query: GetMenuItemsQuery = req.query as unknown as GetMenuItemsQuery;
 
   const page = query.page || 1;
   const limit = query.limit || 10;
@@ -44,15 +44,15 @@ export const getMenuItems = asyncHandler(async (req: Request, res: Response): Pr
       {
         name: {
           contains: query.search,
-          mode: 'insensitive'
-        }
+          mode: 'insensitive',
+        },
       },
       {
         description: {
           contains: query.search,
-          mode: 'insensitive'
-        }
-      }
+          mode: 'insensitive',
+        },
+      },
     ];
   }
 
@@ -75,8 +75,8 @@ export const getMenuItems = asyncHandler(async (req: Request, res: Response): Pr
         category: {
           select: {
             id: true,
-            name: true
-          }
+            name: true,
+          },
         },
         modifiers: {
           include: {
@@ -85,17 +85,17 @@ export const getMenuItems = asyncHandler(async (req: Request, res: Response): Pr
                 id: true,
                 name: true,
                 price: true,
-                type: true
-              }
-            }
+                type: true,
+              },
+            },
           },
           orderBy: {
-            sortOrder: 'asc'
-          }
-        }
-      }
+            sortOrder: 'asc',
+          },
+        },
+      },
     }),
-    prisma.menuItem.count({ where })
+    prisma.menuItem.count({ where }),
   ]);
 
   const totalPages = Math.ceil(totalCount / limit);
@@ -110,10 +110,10 @@ export const getMenuItems = asyncHandler(async (req: Request, res: Response): Pr
           totalPages,
           totalCount,
           hasNextPage: page < totalPages,
-          hasPrevPage: page > 1
-        }
+          hasPrevPage: page > 1,
+        },
       },
       'Menu items retrieved successfully'
     )
   );
-}); 
+});

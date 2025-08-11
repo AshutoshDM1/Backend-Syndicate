@@ -52,26 +52,32 @@ npm run build
 ## 📋 Domain Organization
 
 ### Base (`base.prisma`)
+
 - Prisma generator and datasource configuration
 - Global enums used across multiple domains
 
 ### User Management (`user.prisma`)
+
 - User authentication and authorization
 - Sessions, accounts, and verifications
 
 ### Customer (`customer.prisma`)
+
 - Customer profiles and preferences
 - Payment methods and loyalty information
 
 ### Table Management (`table.prisma`)
+
 - Restaurant table definitions
 - Table status and capacity management
 
 ### Order Management (`order.prisma`)
+
 - Order processing and tracking
 - Order items and modifiers
 
 ### Menu Management (`menu.prisma`)
+
 - Menu items and categories
 - Modifiers and combo meals
 
@@ -102,4 +108,4 @@ npx prisma generate
 - **Easier Maintenance**: Find and edit specific models quickly
 - **Team Collaboration**: Multiple developers can work on different domains
 - **Reduced Conflicts**: Smaller files mean fewer merge conflicts
-- **Clear Dependencies**: Explicit ordering of schema components 
+- **Clear Dependencies**: Explicit ordering of schema components

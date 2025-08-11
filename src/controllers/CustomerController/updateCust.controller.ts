@@ -18,7 +18,7 @@ const updateCustomer = async (req: Request, res: Response) => {
     data: data,
   });
 
-res.status(200).json({
+  res.status(200).json({
     customer: customer,
     message: 'Customer Data updated successfully',
   });

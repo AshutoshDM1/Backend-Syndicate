@@ -13,9 +13,9 @@ export const deleteCategory = asyncHandler(async (req: Request, res: Response): 
     where: { id },
     include: {
       menuItems: {
-        select: { id: true }
-      }
-    }
+        select: { id: true },
+      },
+    },
   });
 
   if (!existingCategory) {
@@ -24,19 +24,16 @@ export const deleteCategory = asyncHandler(async (req: Request, res: Response): 
 
   // Check if category has menu items
   if (existingCategory.menuItems.length > 0) {
-    throw new ApiError(400, 'Cannot delete category that contains menu items. Please move or delete all menu items first.');
+    throw new ApiError(
+      400,
+      'Cannot delete category that contains menu items. Please move or delete all menu items first.'
+    );
   }
 
   // Delete the category
   await prisma.category.delete({
-    where: { id }
+    where: { id },
   });
 
-  res.status(200).json(
-    new ApiResponse(
-      200,
-      null,
-      'Category deleted successfully'
-    )
-  );
-}); 
+  res.status(200).json(new ApiResponse(200, null, 'Category deleted successfully'));
+});

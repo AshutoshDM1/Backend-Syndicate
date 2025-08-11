@@ -38,7 +38,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for more details and to contribute to thi
 - Base URL: `https://backend-syndicate.onrender.com`
 - Swagger API Documentation: `https://backend-syndicate.onrender.com/api-docs`
 
-
 ## 🛠️ Tech Stack
 
 - **Backend Framework**: Node.js with Express

@@ -28,15 +28,15 @@ export const getModifiers = asyncHandler(async (req: Request, res: Response): Pr
       {
         name: {
           contains: query.search,
-          mode: 'insensitive'
-        }
+          mode: 'insensitive',
+        },
       },
       {
         description: {
           contains: query.search,
-          mode: 'insensitive'
-        }
-      }
+          mode: 'insensitive',
+        },
+      },
     ];
   }
 
@@ -54,9 +54,9 @@ export const getModifiers = asyncHandler(async (req: Request, res: Response): Pr
       where,
       orderBy,
       skip,
-      take: limit
+      take: limit,
     }),
-    prisma.modifier.count({ where })
+    prisma.modifier.count({ where }),
   ]);
 
   const totalPages = Math.ceil(totalCount / limit);
@@ -71,10 +71,10 @@ export const getModifiers = asyncHandler(async (req: Request, res: Response): Pr
           totalPages,
           totalCount,
           hasNextPage: page < totalPages,
-          hasPrevPage: page > 1
-        }
+          hasPrevPage: page > 1,
+        },
       },
       'Modifiers retrieved successfully'
     )
   );
-}); 
+});

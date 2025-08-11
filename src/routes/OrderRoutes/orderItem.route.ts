@@ -20,7 +20,6 @@ orderItemRoutes.get('/', validateQuery(getOrderItemsSchema), getOrderItemsOrderI
 // GET /api/v1/orders/:id - Get order by ID
 orderItemRoutes.get('/:id', validateParams(getOrderItemsByIdSchema), getOrderItemsbyID);
 
-
 // DELETE /api/v1/orders/:id - Delete order
 
 export default orderItemRoutes;

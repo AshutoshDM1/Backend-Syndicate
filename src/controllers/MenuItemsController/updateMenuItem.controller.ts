@@ -11,7 +11,7 @@ export const updateMenuItem = asyncHandler(async (req: Request, res: Response): 
 
   // Check if menu item exists
   const existingMenuItem = await prisma.menuItem.findUnique({
-    where: { id }
+    where: { id },
   });
 
   if (!existingMenuItem) {
@@ -21,7 +21,7 @@ export const updateMenuItem = asyncHandler(async (req: Request, res: Response): 
   // If categoryId is being updated, check if the new category exists and is active
   if (updateData.categoryId) {
     const category = await prisma.category.findUnique({
-      where: { id: updateData.categoryId }
+      where: { id: updateData.categoryId },
     });
 
     if (!category) {
@@ -40,8 +40,8 @@ export const updateMenuItem = asyncHandler(async (req: Request, res: Response): 
       where: {
         name: updateData.name,
         categoryId: categoryId,
-        id: { not: id } // Exclude current item
-      }
+        id: { not: id }, // Exclude current item
+      },
     });
 
     if (nameConflict) {
@@ -57,8 +57,8 @@ export const updateMenuItem = asyncHandler(async (req: Request, res: Response): 
       category: {
         select: {
           id: true,
-          name: true
-        }
+          name: true,
+        },
       },
       modifiers: {
         include: {
@@ -67,22 +67,16 @@ export const updateMenuItem = asyncHandler(async (req: Request, res: Response): 
               id: true,
               name: true,
               price: true,
-              type: true
-            }
-          }
+              type: true,
+            },
+          },
         },
         orderBy: {
-          sortOrder: 'asc'
-        }
-      }
-    }
+          sortOrder: 'asc',
+        },
+      },
+    },
   });
 
-  res.status(200).json(
-    new ApiResponse(
-      200,
-      updatedMenuItem,
-      'Menu item updated successfully'
-    )
-  );
-}); 
+  res.status(200).json(new ApiResponse(200, updatedMenuItem, 'Menu item updated successfully'));
+});

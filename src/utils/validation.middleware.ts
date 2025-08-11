@@ -19,16 +19,16 @@ export const validateSchema = (schema: ZodSchema) => {
           errors: error.issues.map((err: any) => ({
             path: err.path.join('.'),
             message: err.message,
-            code: err.code
-          }))
+            code: err.code,
+          })),
         });
         return;
       }
-      
+
       res.status(500).json({
         success: false,
         message: 'Internal server error',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   };
@@ -48,16 +48,16 @@ export const validateParams = (schema: ZodSchema) => {
           errors: error.issues.map((err: any) => ({
             path: err.path.join('.'),
             message: err.message,
-            code: err.code
-          }))
+            code: err.code,
+          })),
         });
         return;
       }
-      
+
       res.status(500).json({
         success: false,
         message: 'Internal server error',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   };
@@ -77,17 +77,17 @@ export const validateQuery = (schema: ZodSchema) => {
           errors: error.issues.map((err: any) => ({
             path: err.path.join('.'),
             message: err.message,
-            code: err.code
-          }))
+            code: err.code,
+          })),
         });
         return;
       }
-      
+
       res.status(500).json({
         success: false,
         message: 'Internal server error',
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   };
-}; 
+};

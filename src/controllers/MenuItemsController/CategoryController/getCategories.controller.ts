@@ -24,15 +24,15 @@ export const getCategories = asyncHandler(async (req: Request, res: Response): P
       {
         name: {
           contains: query.search,
-          mode: 'insensitive'
-        }
+          mode: 'insensitive',
+        },
       },
       {
         description: {
           contains: query.search,
-          mode: 'insensitive'
-        }
-      }
+          mode: 'insensitive',
+        },
+      },
     ];
   }
 
@@ -54,19 +54,19 @@ export const getCategories = asyncHandler(async (req: Request, res: Response): P
       include: {
         _count: {
           select: {
-            menuItems: true
-          }
-        }
-      }
+            menuItems: true,
+          },
+        },
+      },
     }),
-    prisma.category.count({ where })
+    prisma.category.count({ where }),
   ]);
 
   // Transform categories to include item count
-  const categoriesWithCount = categories.map(category => ({
+  const categoriesWithCount = categories.map((category) => ({
     ...category,
     itemCount: category._count.menuItems,
-    _count: undefined
+    _count: undefined,
   }));
 
   const totalPages = Math.ceil(totalCount / limit);
@@ -81,10 +81,10 @@ export const getCategories = asyncHandler(async (req: Request, res: Response): P
           totalPages,
           totalCount,
           hasNextPage: page < totalPages,
-          hasPrevPage: page > 1
-        }
+          hasPrevPage: page > 1,
+        },
       },
       'Categories retrieved successfully'
     )
   );
-}); 
+});

@@ -17,18 +17,18 @@ export const getCategoryById = asyncHandler(async (req: Request, res: Response):
           name: true,
           price: true,
           isAvailable: true,
-          image: true
+          image: true,
         },
         orderBy: {
-          sortOrder: 'asc'
-        }
+          sortOrder: 'asc',
+        },
       },
       _count: {
         select: {
-          menuItems: true
-        }
-      }
-    }
+          menuItems: true,
+        },
+      },
+    },
   });
 
   if (!category) {
@@ -39,14 +39,8 @@ export const getCategoryById = asyncHandler(async (req: Request, res: Response):
   const categoryWithCount = {
     ...category,
     itemCount: category._count.menuItems,
-    _count: undefined
+    _count: undefined,
   };
 
-  res.status(200).json(
-    new ApiResponse(
-      200,
-      categoryWithCount,
-      'Category retrieved successfully'
-    )
-  );
-}); 
+  res.status(200).json(new ApiResponse(200, categoryWithCount, 'Category retrieved successfully'));
+});

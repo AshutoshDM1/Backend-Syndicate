@@ -84,4 +84,4 @@
  *       - cookieAuth: []
  */
 
-export {}; 
+export {};

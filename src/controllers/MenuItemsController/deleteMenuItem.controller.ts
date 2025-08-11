@@ -12,9 +12,9 @@ export const deleteMenuItem = asyncHandler(async (req: Request, res: Response): 
     where: { id },
     include: {
       orderItems: {
-        select: { id: true }
-      }
-    }
+        select: { id: true },
+      },
+    },
   });
 
   if (!existingMenuItem) {
@@ -23,19 +23,16 @@ export const deleteMenuItem = asyncHandler(async (req: Request, res: Response): 
 
   // Check if menu item is used in any orders
   if (existingMenuItem.orderItems.length > 0) {
-    throw new ApiError(400, 'Cannot delete menu item that has been ordered. Consider marking it as unavailable instead.');
+    throw new ApiError(
+      400,
+      'Cannot delete menu item that has been ordered. Consider marking it as unavailable instead.'
+    );
   }
 
   // Delete the menu item (this will cascade delete related modifiers)
   await prisma.menuItem.delete({
-    where: { id }
+    where: { id },
   });
 
-  res.status(200).json(
-    new ApiResponse(
-      200,
-      null,
-      'Menu item deleted successfully'
-    )
-  );
-}); 
+  res.status(200).json(new ApiResponse(200, null, 'Menu item deleted successfully'));
+});

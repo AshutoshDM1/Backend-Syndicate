@@ -1,4 +1,4 @@
-import swaggerJSDoc from 'swagger-jsdoc';   
+import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
 const options: swaggerJSDoc.Options = {
@@ -40,44 +40,44 @@ const options: swaggerJSDoc.Options = {
           name: 'better-auth.session_token',
         },
       },
-             schemas: {
-         ApiResponse: {
-           type: 'object',
-           properties: {
-             success: {
-               type: 'boolean',
-               description: 'Indicates if the request was successful',
-             },
-             message: {
-               type: 'string',
-               description: 'Response message',
-             },
-             error: {
-               type: 'string',
-               description: 'Error message if request failed',
-             },
-           },
-           required: ['success', 'message'],
-         },
-         Error: {
-           type: 'object',
-           properties: {
-             success: {
-               type: 'boolean',
-               example: false,
-             },
-             message: {
-               type: 'string',
-               description: 'Error message',
-             },
-             error: {
-               type: 'string',
-               description: 'Detailed error information',
-             },
-           },
-           required: ['success', 'message'],
-         },
-       },
+      schemas: {
+        ApiResponse: {
+          type: 'object',
+          properties: {
+            success: {
+              type: 'boolean',
+              description: 'Indicates if the request was successful',
+            },
+            message: {
+              type: 'string',
+              description: 'Response message',
+            },
+            error: {
+              type: 'string',
+              description: 'Error message if request failed',
+            },
+          },
+          required: ['success', 'message'],
+        },
+        Error: {
+          type: 'object',
+          properties: {
+            success: {
+              type: 'boolean',
+              example: false,
+            },
+            message: {
+              type: 'string',
+              description: 'Error message',
+            },
+            error: {
+              type: 'string',
+              description: 'Detailed error information',
+            },
+          },
+          required: ['success', 'message'],
+        },
+      },
       responses: {
         UnauthorizedError: {
           description: 'Authentication information is missing or invalid',
@@ -150,12 +150,9 @@ const options: swaggerJSDoc.Options = {
       },
     ],
   },
-  apis: [
-    './src/swagger/*.ts',
-    './src/index.ts',
-  ],
+  apis: ['./src/swagger/*.ts', './src/index.ts'],
 };
 
 const specs = swaggerJSDoc(options);
 
-export { swaggerUi, specs }; 
+export { swaggerUi, specs };

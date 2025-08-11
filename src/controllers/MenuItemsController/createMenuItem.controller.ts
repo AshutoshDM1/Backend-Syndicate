@@ -10,7 +10,7 @@ export const createMenuItem = asyncHandler(async (req: Request, res: Response): 
 
   // Check if category exists
   const category = await prisma.category.findUnique({
-    where: { id: menuItemData.categoryId }
+    where: { id: menuItemData.categoryId },
   });
 
   if (!category) {
@@ -25,8 +25,8 @@ export const createMenuItem = asyncHandler(async (req: Request, res: Response): 
   const existingMenuItem = await prisma.menuItem.findFirst({
     where: {
       name: menuItemData.name,
-      categoryId: menuItemData.categoryId
-    }
+      categoryId: menuItemData.categoryId,
+    },
   });
 
   if (existingMenuItem) {
@@ -49,23 +49,17 @@ export const createMenuItem = asyncHandler(async (req: Request, res: Response): 
       isVegan: menuItemData.isVegan ?? false,
       isGlutenFree: menuItemData.isGlutenFree ?? false,
       isSpicy: menuItemData.isSpicy ?? false,
-      sortOrder: menuItemData.sortOrder ?? 0
+      sortOrder: menuItemData.sortOrder ?? 0,
     },
     include: {
       category: {
         select: {
           id: true,
-          name: true
-        }
-      }
-    }
+          name: true,
+        },
+      },
+    },
   });
 
-  res.status(201).json(
-    new ApiResponse(
-      201,
-      newMenuItem,
-      'Menu item created successfully'
-    )
-  );
-}); 
+  res.status(201).json(new ApiResponse(201, newMenuItem, 'Menu item created successfully'));
+});

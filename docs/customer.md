@@ -13,8 +13,8 @@ Response:
   "customers": [
     {
       "id": "nprsPH31exOVauOcMgBjWwcQ22lVof7g",
-      "userId": "nprsPH31exOVauOcMgBjWwcQ22lVof7g",
-    //   .....
+      "userId": "nprsPH31exOVauOcMgBjWwcQ22lVof7g"
+      //   .....
     }
   ],
   "totalCustomers": 1,
@@ -32,12 +32,13 @@ Response:
 {
   "customer": {
     "id": "nprsPH31exOVauOcMgBjWwcQ22lVof7g",
-    "userId": "nprsPH31exOVauOcMgBjWwcQ22lVof7g",
+    "userId": "nprsPH31exOVauOcMgBjWwcQ22lVof7g"
     // ....
   },
   "message": "Customer data fetched successfully"
 }
 ```
+
 ---
 
 `TODO`
@@ -54,8 +55,8 @@ Params:
 
 ```json
 {
-  "id":"nprsPH31exOVauOcMgBjWwcQ22lVof7g",
-  "data":{
+  "id": "nprsPH31exOVauOcMgBjWwcQ22lVof7g",
+  "data": {
     // ...
   }
 }
@@ -67,12 +68,13 @@ Response:
 {
   "customer": {
     "id": "nprsPH31exOVauOcMgBjWwcQ22lVof7g",
-    "userId": "nprsPH31exOVauOcMgBjWwcQ22lVof7g",
+    "userId": "nprsPH31exOVauOcMgBjWwcQ22lVof7g"
     // ....
   },
   "message": "Customer Data updated successfully"
 }
 ```
+
 ---
 
 - DELETE - `/delete-customer`
@@ -81,7 +83,7 @@ Params:
 
 ```json
 {
-  "id":"nprsPH31exOVauOcMgBjWwcQ22lVof7g",
+  "id": "nprsPH31exOVauOcMgBjWwcQ22lVof7g"
 }
 ```
 
@@ -91,7 +93,7 @@ Response:
 {
   "customer": {
     "id": "nprsPH31exOVauOcMgBjWwcQ22lVof7g",
-    "userId": "nprsPH31exOVauOcMgBjWwcQ22lVof7g",
+    "userId": "nprsPH31exOVauOcMgBjWwcQ22lVof7g"
     // ....
   },
   "message": "Customer Data Deleted successfully"

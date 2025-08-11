@@ -15,6 +15,7 @@ src/swagger/
 ## 🔧 Configuration
 
 The main Swagger configuration is located at `src/config/swagger.ts`. This file:
+
 - Sets up the OpenAPI specification
 - Configures authentication schemes
 - Defines common response schemas
@@ -23,17 +24,22 @@ The main Swagger configuration is located at `src/config/swagger.ts`. This file:
 ## 📚 Documentation Files
 
 ### `user.swagger.ts`
+
 Contains documentation for all user-related endpoints:
+
 - GET `/api/v1/users/user-detail-table` - Get users with role filtering
 - PUT `/api/v1/users/update-user` - Update user information
 
 **Schemas defined:**
+
 - `User` - User model schema
 - `UserListResponse` - Response schema for user list
 - `UpdateUserRequest` - Request schema for user updates
 
 ### `customer.swagger.ts`
+
 Contains documentation for all customer-related endpoints:
+
 - GET `/api/v1/customers` - Get all customers
 - GET `/api/v1/customers/get-customer/{id}` - Get customer by ID
 - POST `/api/v1/customers/create-customer` - Create new customer (TODO)
@@ -41,6 +47,7 @@ Contains documentation for all customer-related endpoints:
 - DELETE `/api/v1/customers/delete-customer` - Delete customer
 
 **Schemas defined:**
+
 - `Customer` - Customer model schema
 - `CustomerListResponse` - Response schema for customer list
 - `CreateCustomerRequest` - Request schema for customer creation
@@ -48,7 +55,9 @@ Contains documentation for all customer-related endpoints:
 - `DeleteCustomerRequest` - Request schema for customer deletion
 
 ### `health.swagger.ts`
+
 Contains documentation for health check endpoints:
+
 - GET `/health` - Server health status
 - GET `/` - Root endpoint
 
@@ -93,6 +102,7 @@ export {};
 ### 2. Document Individual Endpoints
 
 For each endpoint, include:
+
 - **Tags**: Group related endpoints
 - **Summary**: Brief description
 - **Description**: Detailed explanation
@@ -104,6 +114,7 @@ For each endpoint, include:
 ### 3. Define Schemas
 
 Define reusable schemas in the `components.schemas` section:
+
 - Request/Response models
 - Shared data types
 - Error schemas
@@ -155,6 +166,7 @@ Use the following format for endpoint documentation:
 ## 🔗 Schema References
 
 Use `$ref` to reference:
+
 - Common schemas: `$ref: '#/components/schemas/SchemaName'`
 - Common responses: `$ref: '#/components/responses/ResponseName'`
 
@@ -170,6 +182,7 @@ Use `$ref` to reference:
 ## 🔄 Updating Documentation
 
 When modifying existing endpoints:
+
 1. Update the corresponding swagger file
 2. Ensure examples match current API behavior
 3. Update schema definitions if data models change
@@ -180,4 +193,4 @@ When modifying existing endpoints:
 - **Development**: `http://localhost:2020/api-docs`
 - **Production**: `https://backend-syndicate.onrender.com/api-docs`
 
-The documentation is automatically generated from these files and served through the Swagger UI interface. 
+The documentation is automatically generated from these files and served through the Swagger UI interface.

@@ -11,7 +11,7 @@ export const updateModifier = asyncHandler(async (req: Request, res: Response): 
 
   // Check if modifier exists
   const existingModifier = await prisma.modifier.findUnique({
-    where: { id }
+    where: { id },
   });
 
   if (!existingModifier) {
@@ -23,8 +23,8 @@ export const updateModifier = asyncHandler(async (req: Request, res: Response): 
     const nameConflict = await prisma.modifier.findFirst({
       where: {
         name: updateData.name,
-        id: { not: id } // Exclude current modifier
-      }
+        id: { not: id }, // Exclude current modifier
+      },
     });
 
     if (nameConflict) {
@@ -35,14 +35,8 @@ export const updateModifier = asyncHandler(async (req: Request, res: Response): 
   // Update the modifier
   const updatedModifier = await prisma.modifier.update({
     where: { id },
-    data: updateData
+    data: updateData,
   });
 
-  res.status(200).json(
-    new ApiResponse(
-      200,
-      updatedModifier,
-      'Modifier updated successfully'
-    )
-  );
-}); 
+  res.status(200).json(new ApiResponse(200, updatedModifier, 'Modifier updated successfully'));
+});

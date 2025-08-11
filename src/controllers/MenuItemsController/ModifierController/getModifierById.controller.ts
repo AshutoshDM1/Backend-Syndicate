@@ -20,25 +20,19 @@ export const getModifierById = asyncHandler(async (req: Request, res: Response):
               category: {
                 select: {
                   id: true,
-                  name: true
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   });
 
   if (!modifier) {
     throw new ApiError(404, 'Modifier not found');
   }
 
-  res.status(200).json(
-    new ApiResponse(
-      200,
-      modifier,
-      'Modifier retrieved successfully'
-    )
-  );
-}); 
+  res.status(200).json(new ApiResponse(200, modifier, 'Modifier retrieved successfully'));
+});

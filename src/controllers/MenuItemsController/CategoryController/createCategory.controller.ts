@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../../db';
-import { ApiResponse } from '../../../utils/ApiResponse'; 
+import { ApiResponse } from '../../../utils/ApiResponse';
 import { ApiError } from '../../../utils/ApiError';
 import { asyncHandler } from '../../../utils/asyncHandler';
 import { CreateCategoryInput } from './validation';
@@ -11,8 +11,8 @@ export const createCategory = asyncHandler(async (req: Request, res: Response): 
   // Check if category with same name already exists
   const existingCategory = await prisma.category.findFirst({
     where: {
-      name: categoryData.name
-    }
+      name: categoryData.name,
+    },
   });
 
   if (existingCategory) {
@@ -24,15 +24,9 @@ export const createCategory = asyncHandler(async (req: Request, res: Response): 
     data: {
       name: categoryData.name,
       description: categoryData.description,
-      sortOrder: categoryData.sortOrder ?? 0
-    }
+      sortOrder: categoryData.sortOrder ?? 0,
+    },
   });
 
-  res.status(201).json(
-    new ApiResponse(
-      201,
-      newCategory,
-      'Category created successfully'
-    )
-  );
-}); 
+  res.status(201).json(new ApiResponse(201, newCategory, 'Category created successfully'));
+});
