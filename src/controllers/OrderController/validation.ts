@@ -7,7 +7,7 @@ export const PaymentMethodEnum = z.nativeEnum(PaymentMethod);
 export const createOrderSchema = z.object({
   tableId: z.string().uuid('Invalid table ID format'),
   customerName: z.string().min(1, 'Customer name is required'),
-  customerPhone: z.number().min(1, 'Customer phone is required'),
+  customerPhone: z.string().min(1, 'Customer phone is required'),
   totalAmount: z.number().min(0, 'Total amount must be greater than 0'),
   status: OrderStatusEnum.optional(),
   paymentMethod: PaymentMethodEnum.optional(),
@@ -23,7 +23,7 @@ export const updateOrderSchema = z.object({
   status: OrderStatusEnum.optional(),
   tableId: z.string().uuid('Invalid table ID format').optional(),
   customerName: z.string().min(1, 'Customer name is required').optional(),
-  customerPhone: z.number().min(1, 'Customer phone is required').optional(),
+  customerPhone: z.string().min(1, 'Customer phone is required').optional(),
   totalAmount: z.number().min(0, 'Total amount must be greater than 0').optional(),
   paymentMethod: PaymentMethodEnum.optional(),
   orderItems: z.array(z.object({
