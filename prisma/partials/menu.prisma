@@ -85,7 +85,7 @@ model ComboMeal {
   isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
+  sortOrder  Int     @default(0)
   // Relations
   items       ComboMealItem[]
   orderItems  OrderItem[]

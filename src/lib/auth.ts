@@ -11,6 +11,16 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        defaultValue: "CUSTOMER",
+        input: false, // don't allow user to set role during signup
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
@@ -34,15 +44,6 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        before: async (userData) => {
-          console.log('Creating user with data:', userData);
-          return {
-            data: {
-              ...userData,
-              role: 'CUSTOMER',
-            },
-          };
-        },
         after: async (user) => {
           const existingCustomer = await prisma.customer.findUnique({
             where: { userId: user.id },

@@ -6,7 +6,7 @@ model Order {
   id             String      @id @default(uuid())
   tableId        String
   customerName   String
-  customerPhone  Int?
+  customerPhone  String?
   orderTime      DateTime    @default(now())
   totalAmount    Decimal     @default(0)
   status         OrderStatus @default(STARTED)
