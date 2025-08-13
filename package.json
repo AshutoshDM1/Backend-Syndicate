@@ -13,7 +13,7 @@
     "generate": "npm run db && prisma generate",
     "db": "node prisma/build-schema.js",
     "db:push": "node prisma/build-schema.js && prisma db push",
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
     "lint": "eslint --ext .ts .",

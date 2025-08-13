@@ -1,0 +1,91 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ec2-key.pem
+          chmod 400 ec2-key.pem
+          eval "$(ssh-agent -s)"
+          ssh-add ec2-key.pem
+
+      - name: Create Deployment
+        id: deployment
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: ${{ github.token }}
+          environment: production
+          initial-status: in_progress
+
+      - name: Deploy to EC2 with Docker
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~/Backend-Syndicate
+            
+            # Pull latest changes
+            git reset --hard HEAD
+            git clean -fd
+            git pull origin main
+            
+            # Stop and remove existing containers
+            docker-compose -f docker-compose-prod.yml down --remove-orphans || true
+            
+            # Run database migrations before starting the new container
+            docker run --rm -v $(pwd):/app -w /app --env-file .env node:18-alpine sh -c "
+              npm install -g pnpm &&
+              pnpm install --frozen-lockfile &&
+              npx prisma generate &&
+              npx prisma migrate deploy
+            "
+            
+            # Build and start the new container
+            docker-compose -f docker-compose-prod.yml up -d --build
+            
+            # Wait for the application to be healthy
+            echo "Waiting for application to be healthy..."
+            timeout=60
+            counter=0
+            while [ $counter -lt $timeout ]; do
+              if curl -f http://localhost:2020/health > /dev/null 2>&1; then
+                echo "Application is healthy!"
+                break
+              fi
+              echo "Waiting for application to be healthy... ($counter/$timeout)"
+              sleep 5
+              counter=$((counter + 5))
+            done
+            
+            if [ $counter -eq $timeout ]; then
+              echo "Application failed to become healthy within $timeout seconds"
+              # Show logs for debugging
+              docker-compose -f docker-compose-prod.yml logs backend
+              exit 1
+            fi
+            
+            # Clean up old images
+            docker image prune -f
+          EOF
+
+      - name: Update deployment status
+        if: always()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ github.token }}
+          state: ${{ job.status == 'success' && 'success' || 'failure' }}
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ec2-key.pem

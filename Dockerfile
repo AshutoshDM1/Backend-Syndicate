@@ -16,11 +16,10 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Copy source code
-COPY . .
-
-# Copy prisma files
+# Copy source code and necessary files
+COPY src ./src
 COPY prisma ./prisma
+COPY tsconfig.json ./
 
 # Generate Prisma client and build the application
 RUN pnpm run build
@@ -46,6 +45,7 @@ RUN pnpm install --frozen-lockfile --prod
 
 # Copy built application and necessary files from base stage
 COPY --from=base --chown=backend:nodejs /app/dist ./dist
+COPY --from=base --chown=backend:nodejs /app/src ./src
 COPY --from=base --chown=backend:nodejs /app/prisma ./prisma
 COPY --from=base --chown=backend:nodejs /app/node_modules/.pnpm ./node_modules/.pnpm
 COPY --from=base --chown=backend:nodejs /app/node_modules/@prisma ./node_modules/@prisma

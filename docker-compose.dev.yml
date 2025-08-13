@@ -1,0 +1,36 @@
+services:
+  backend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: backend-syndicate-dev
+    restart: unless-stopped
+    ports:
+      - '2020:2020'
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=${DATABASE_URL}
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - BETTER_AUTH_URL=${BETTER_AUTH_URL}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - BASE_URL=${BASE_URL}
+      - PORT=2020
+    volumes:
+      # Mount source code for hot reloading
+      - ./src:/app/src:delegated
+      - ./prisma:/app/prisma:delegated
+      # Mount configuration files
+      - ./package.json:/app/package.json:delegated
+      - ./pnpm-lock.yaml:/app/pnpm-lock.yaml:delegated
+      - ./tsconfig.json:/app/tsconfig.json:delegated
+      - ./nodemon.json:/app/nodemon.json:delegated
+      # Use named volume for node_modules to avoid conflicts
+      - backend_node_modules:/app/node_modules
+    tty: true
+    stdin_open: true
+    command: pnpm run dev
+volumes:
+  backend_node_modules:

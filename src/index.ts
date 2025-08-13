@@ -71,7 +71,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Health check
 app.get('/health', async (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
