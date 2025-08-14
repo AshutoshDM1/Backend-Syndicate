@@ -39,8 +39,8 @@ jobs:
             git clean -fd
             git pull origin main
             
-            # Stop and remove existing containers
-            docker-compose -f docker-compose-prod.yml down --remove-orphans || true
+            # Stop and remove existing containers (Docker Compose v2 syntax)
+            docker compose -f docker-compose-prod.yml down --remove-orphans || true
             
             # Run database migrations before starting the new container
             docker run --rm -v $(pwd):/app -w /app --env-file .env node:18-alpine sh -c "
@@ -50,8 +50,8 @@ jobs:
               npx prisma migrate deploy
             "
             
-            # Build and start the new container
-            docker-compose -f docker-compose-prod.yml up -d --build
+            # Build and start the new container (Docker Compose v2 syntax)
+            docker compose -f docker-compose-prod.yml up -d --build
             
             # Wait for the application to be healthy
             echo "Waiting for application to be healthy..."
@@ -70,7 +70,7 @@ jobs:
             if [ $counter -eq $timeout ]; then
               echo "Application failed to become healthy within $timeout seconds"
               # Show logs for debugging
-              docker-compose -f docker-compose-prod.yml logs backend
+              docker compose -f docker-compose-prod.yml logs backend
               exit 1
             fi
             
