@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
 
+    permissions:
+      contents: read
+      deployments: write
+      id-token: write
+      
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
