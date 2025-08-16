@@ -51,8 +51,7 @@ jobs:
             docker run --rm -v $(pwd):/app -w /app --env-file .env node:18-alpine sh -c "
               npm install -g pnpm &&
               pnpm install --frozen-lockfile &&
-              npx prisma generate &&
-              npx prisma migrate deploy
+              pnpm run build
             "
             
             # Build and start the new container (Docker Compose v2 syntax)
