@@ -14,7 +14,7 @@ jobs:
       contents: read
       deployments: write
       id-token: write
-
+      
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -38,18 +38,26 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i ec2-key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             cd ~/Backend-Syndicate
-
+            
             # Pull latest changes
             git reset --hard HEAD
             git clean -fd
             git pull origin main
-
+            
             # Stop and remove existing containers (Docker Compose v2 syntax)
             docker compose -f docker-compose-prod.yml down --remove-orphans || true
-
+            
+            # Run database migrations before starting the new container
+            docker run --rm -v $(pwd):/app -w /app --env-file .env node:18-alpine sh -c "
+              npm install -g pnpm &&
+              pnpm install --frozen-lockfile &&
+              npx prisma generate &&
+              npx prisma migrate deploy
+            "
+            
             # Build and start the new container (Docker Compose v2 syntax)
             docker compose -f docker-compose-prod.yml up -d --build
-
+            
             # Wait for the application to be healthy
             echo "Waiting for application to be healthy..."
             timeout=60
@@ -63,14 +71,14 @@ jobs:
               sleep 5
               counter=$((counter + 5))
             done
-
+            
             if [ $counter -eq $timeout ]; then
               echo "Application failed to become healthy within $timeout seconds"
               # Show logs for debugging
               docker compose -f docker-compose-prod.yml logs backend
               exit 1
             fi
-
+            
             # Clean up old images
             docker image prune -f
           EOF
