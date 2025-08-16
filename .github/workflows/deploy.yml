@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
 
     permissions:
       contents: read
@@ -41,7 +40,7 @@ jobs:
             
             # Pull latest changes
             git reset --hard HEAD
-            git clean -fd
+            rm -rf node_modules dist
             git pull origin main
             
             # Stop and remove existing containers (Docker Compose v2 syntax)
