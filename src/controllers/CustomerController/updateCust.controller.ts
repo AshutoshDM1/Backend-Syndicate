@@ -1,27 +1,26 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../db';
+import { asyncHandler } from '../../utils/asyncHandler';
+import { ApiResponse } from '../../utils/ApiResponse';
+import { ApiError } from '../../utils/ApiError';
+import { UpdateCustomerInput } from './validation';
 
-const updateCustomer = async (req: Request, res: Response) => {
-  const { id, data } = req.body;
-
-  if (!id || !data) {
-    res.status(501).json({
-      message: 'Invalid! body has missing or invalid params',
-    });
-    return;
-  }
+const updateCustomer = asyncHandler(async (req: Request, res: Response) => {
+  const body: UpdateCustomerInput = req.body;
+  const { id, ...rest } = body;
 
   const customer = await prisma.customer.update({
     where: {
       id: id,
     },
-    data: data,
+    data: rest,
   });
 
-  res.status(200).json({
-    customer: customer,
-    message: 'Customer Data updated successfully',
-  });
-};
+  if (!customer) {
+    new ApiError(404, `Failed to update!`);
+  }
+
+  res.status(200).json(new ApiResponse(201, customer, `Customer Data updated successfully`));
+});
 
 export { updateCustomer };

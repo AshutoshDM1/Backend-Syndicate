@@ -1,6 +1,4 @@
-import { getCustomerById } from './getCustById.controller';
-import { getCustomerDetails } from './getCust.controller';
-import { updateCustomer } from './updateCust.controller';
-import { deleteCustomer } from './deleteCust.controller';
-
-export default { getCustomerById, getCustomerDetails, updateCustomer, deleteCustomer };
+export { getCustomerById } from './getCustById.controller';
+export { getCustomerDetails } from './getCust.controller';
+export { updateCustomer } from './updateCust.controller';
+export { deleteCustomer } from './deleteCust.controller';
