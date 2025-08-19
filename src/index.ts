@@ -6,6 +6,7 @@ import { toNodeHandler } from 'better-auth/node';
 import { auth } from './lib/auth';
 import userRoutes from './routes/user.route';
 import customerRoutes from './routes/customer.route';
+import feedbackRoutes from './routes/feedback.route';
 import { swaggerUi, specs } from './config/swagger';
 import tableRoutes from './routes/table.route';
 import categoryRoutes from './routes/MenuItemRoutes/category.route';
@@ -52,6 +53,7 @@ app.use(
 // Routes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/customers', customerRoutes);
+app.use('/api/v1/feedback', feedbackRoutes);
 app.use('/api/v1/tables', tableRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/menu-items', menuItemRoutes);
